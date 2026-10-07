@@ -125,30 +125,7 @@
             white-space: nowrap;
         }
 
-        /* Minimalist Clock */
-        .clock-container {
-            position: absolute;
-            bottom: 40px;
-            right: 50px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 300;
-            font-size: 36px;
-            color: #fff;
-            letter-spacing: 3px;
-            z-index: 10;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
-            opacity: 0.8;
-        }
-
-        .colon {
-            animation: blink 2s step-start infinite;
-            display: inline-block;
-            transform: translateY(-2px);
-        }
-
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
+        /* ... existing code ... */
     </style>
 </head>
 <body>
@@ -163,25 +140,7 @@
         <h1>JOIN US FOR HALLOWEEN</h1>
     </div>
 
-    <div class="clock-container" id="clock">
-        <span id="hour">12</span><span class="colon">:</span><span id="minute">00</span><span class="colon">:</span><span id="second">00</span>
-    </div>
-
     <script>
-        // Clock with blinking colon
-        function updateClock() {
-            const now = new Date();
-            let h = now.getHours().toString().padStart(2, '0');
-            let m = now.getMinutes().toString().padStart(2, '0');
-            let s = now.getSeconds().toString().padStart(2, '0');
-            
-            document.getElementById('hour').textContent = h;
-            document.getElementById('minute').textContent = m;
-            document.getElementById('second').textContent = s;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
         // Keyboard controls
         let isPaused = false;
         let isLocked = false;
