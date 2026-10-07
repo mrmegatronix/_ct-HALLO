@@ -24,55 +24,83 @@
             background-image: url('coasters_halloween.jpg');
             background-size: cover;
             background-position: center;
-            background-color: #111; /* fallback */
+            background-color: #050505;
+        }
+
+        /* Cinematic Vignette */
+        .vignette {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 50% 50%, transparent 30%, rgba(0, 0, 0, 0.9) 110%);
+            z-index: 9;
+            pointer-events: none;
         }
 
         /* Full Moon */
         .moon {
             position: absolute;
-            top: 150px; 
-            left: 200px;
-            width: 250px; 
-            height: 250px;
-            background: radial-gradient(circle at 30% 30%, #fffbdd, #e6b800);
+            top: 100px; 
+            left: 250px;
+            width: 200px; 
+            height: 200px;
+            background: radial-gradient(circle at 30% 30%, #fffbdd, #d4a000);
             border-radius: 50%;
-            box-shadow: 0 0 80px #e6b800, inset -20px -20px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 0 100px #ffaa00, inset -20px -20px 40px rgba(0,0,0,0.5);
             z-index: 1;
-            animation: moon-glow 5s infinite alternate;
+            animation: moon-glow 6s infinite alternate ease-in-out;
         }
 
         @keyframes moon-glow {
-            from { box-shadow: 0 0 80px #e6b800, inset -20px -20px 40px rgba(0,0,0,0.3); }
-            to { box-shadow: 0 0 120px #ffcc00, inset -20px -20px 40px rgba(0,0,0,0.3); }
+            from { box-shadow: 0 0 80px #ff9900, inset -20px -20px 40px rgba(0,0,0,0.5); }
+            to { box-shadow: 0 0 150px #ffcc00, inset -20px -20px 40px rgba(0,0,0,0.5); }
         }
 
-        /* Moving Clouds */
+        /* Moving Clouds Parallax */
         .clouds {
             position: absolute;
             top: 0; 
             left: 0;
-            width: 4000px; /* Double width for looping */
+            width: 200%; 
             height: 100%;
-            background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                              radial-gradient(circle at 80% 20%, rgba(255,255,255,0.15) 0%, transparent 40%),
-                              radial-gradient(circle at 20% 80%, rgba(255,255,255,0.05) 0%, transparent 60%);
-            background-size: 1920px 1080px;
+            background-image: 
+                radial-gradient(ellipse at 20% 30%, rgba(200, 200, 255, 0.15) 0%, transparent 40%),
+                radial-gradient(ellipse at 80% 20%, rgba(200, 200, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 70%, rgba(150, 150, 200, 0.05) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(150, 150, 200, 0.1) 0%, transparent 50%);
+            background-size: 50% 100%;
             z-index: 2;
-            animation: drift 40s linear infinite;
+            animation: drift 60s linear infinite;
+            mix-blend-mode: screen;
+        }
+
+        .clouds2 {
+            position: absolute;
+            top: 0; 
+            left: 0;
+            width: 200%; 
+            height: 100%;
+            background-image: 
+                radial-gradient(ellipse at 10% 60%, rgba(255, 255, 255, 0.08) 0%, transparent 30%),
+                radial-gradient(ellipse at 90% 40%, rgba(255, 255, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(ellipse at 50% 10%, rgba(255, 255, 255, 0.07) 0%, transparent 50%);
+            background-size: 50% 100%;
+            z-index: 3;
+            animation: drift 45s linear infinite reverse;
+            mix-blend-mode: overlay;
         }
 
         @keyframes drift {
             0% { transform: translateX(0); }
-            100% { transform: translateX(-1920px); }
+            100% { transform: translateX(-50%); }
         }
 
         /* Spooky overlay */
         .overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(150, 0, 255, 0.1), rgba(0,0,0,0.8));
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(50, 0, 80, 0.2), rgba(0,0,0,0.9));
             z-index: 3;
-            animation: flicker 6s infinite;
+            animation: flicker 8s infinite;
         }
 
         /* Lightning effect */
@@ -120,12 +148,20 @@
             text-overflow: ellipsis;
             max-width: 1800px;
             overflow: hidden;
-            animation: pulse 3s infinite alternate;
+            animation: zombie-rise 15s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
         }
 
-        @keyframes pulse {
-            from { transform: scale(1); filter: hue-rotate(0deg); }
-            to { transform: scale(1.05); filter: hue-rotate(15deg); }
+        @keyframes zombie-rise {
+            0% { transform: translateY(120vh) rotateZ(8deg) scale(0.8); opacity: 0; filter: grayscale(100%); }
+            10% { transform: translateY(60vh) rotateZ(-4deg) scale(0.9); opacity: 0.5; filter: grayscale(50%); }
+            20% { transform: translateY(0) rotateZ(0) scale(1); opacity: 1; filter: grayscale(0%); text-shadow: 0 0 30px #000, 0 0 50px #ff3300, 5px 5px 0px #000; }
+            25% { transform: translateY(0) rotateZ(0) scale(1.05); text-shadow: 0 0 50px #000, 0 0 80px #ff5500, 8px 8px 0px #000; }
+            30% { transform: translateY(0) rotateZ(0) scale(1); }
+            50% { transform: translateY(0) rotateZ(0) scale(1.05); text-shadow: 0 0 50px #000, 0 0 80px #ff5500, 8px 8px 0px #000; }
+            55% { transform: translateY(0) rotateZ(0) scale(1); }
+            80% { transform: translateY(0) rotateZ(0) scale(1); opacity: 1; filter: grayscale(0%); }
+            90% { transform: translateY(80vh) rotateZ(-3deg) scale(0.9); opacity: 0.5; filter: grayscale(50%); }
+            100% { transform: translateY(120vh) rotateZ(5deg) scale(0.8); opacity: 0; filter: grayscale(100%); }
         }
 
         /* Witch on broomstick */
@@ -204,9 +240,11 @@
 <body>
     <div class="slide-container">
         <div class="clouds"></div>
+        <div class="clouds2"></div>
         <div class="moon"></div>
         <div class="overlay"></div>
         <div class="lightning"></div>
+        <div class="vignette"></div>
         
         <div class="content">
             <h1>JOIN US FOR HALLOWEEN</h1>
