@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Halloween at Coasters Tavern</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Creepster', sans-serif;
+            color: #fff;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+
+        .slide-container {
+            width: 1920px;
+            height: 1080px;
+            position: relative;
+            background-image: url('coasters_halloween.jpg');
+            background-size: cover;
+            background-position: center;
+            background-color: #111; /* fallback */
+        }
+
+        /* Full Moon */
+        .moon {
+            position: absolute;
+            top: 150px; 
+            left: 200px;
+            width: 250px; 
+            height: 250px;
+            background: radial-gradient(circle at 30% 30%, #fffbdd, #e6b800);
+            border-radius: 50%;
+            box-shadow: 0 0 80px #e6b800, inset -20px -20px 40px rgba(0,0,0,0.3);
+            z-index: 1;
+            animation: moon-glow 5s infinite alternate;
+        }
+
+        @keyframes moon-glow {
+            from { box-shadow: 0 0 80px #e6b800, inset -20px -20px 40px rgba(0,0,0,0.3); }
+            to { box-shadow: 0 0 120px #ffcc00, inset -20px -20px 40px rgba(0,0,0,0.3); }
+        }
+
+        /* Moving Clouds */
+        .clouds {
+            position: absolute;
+            top: 0; 
+            left: 0;
+            width: 4000px; /* Double width for looping */
+            height: 100%;
+            background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 20%, rgba(255,255,255,0.15) 0%, transparent 40%),
+                              radial-gradient(circle at 20% 80%, rgba(255,255,255,0.05) 0%, transparent 60%);
+            background-size: 1920px 1080px;
+            z-index: 2;
+            animation: drift 40s linear infinite;
+        }
+
+        @keyframes drift {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-1920px); }
+        }
+
+        /* Spooky overlay */
+        .overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(150, 0, 255, 0.1), rgba(0,0,0,0.8));
+            z-index: 3;
+            animation: flicker 6s infinite;
+        }
+
+        /* Lightning effect */
+        .lightning {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255, 255, 255, 0);
+            z-index: 4;
+            pointer-events: none;
+            animation: flash 15s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes flash {
+            0%, 93%, 96%, 98%, 100% { background-color: rgba(255, 255, 255, 0); }
+            94%, 97% { background-color: rgba(255, 255, 255, 0.8); }
+            95% { background-color: rgba(200, 200, 255, 0.6); }
+        }
+
+        .content {
+            position: absolute;
+            z-index: 5;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        h1 {
+            font-family: 'Creepster', cursive;
+            font-size: 200px;
+            color: #ffaa00;
+            text-shadow: 0 0 30px #000, 0 0 50px #ff3300, 5px 5px 0px #000;
+            margin: 0;
+            padding: 20px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 1800px;
+            overflow: hidden;
+            animation: pulse 3s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); filter: hue-rotate(0deg); }
+            to { transform: scale(1.05); filter: hue-rotate(15deg); }
+        }
+
+        /* Witch on broomstick */
+        .witch {
+            position: absolute;
+            z-index: 6;
+            width: 250px;
+            height: 250px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M80,60 L90,65 L85,75 L15,80 L5,70 L10,65 L30,68 L40,40 C35,30 50,10 60,15 C65,20 60,35 50,45 L45,67 Z" fill="%23000"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: fly-witch 20s linear infinite;
+        }
+
+        @keyframes fly-witch {
+            0% { transform: translate(-300px, 300px) scale(0.5) rotate(-10deg); opacity: 0; }
+            5% { opacity: 1; }
+            95% { opacity: 1; }
+            100% { transform: translate(2200px, -100px) scale(1.2) rotate(10deg); opacity: 0; }
+        }
+
+        /* Bat animations */
+        .bats {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M10 50 Q 30 20 50 50 Q 70 20 90 50 Q 70 80 50 60 Q 30 80 10 50 Z" fill="%23000"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 7;
+            animation: fly-bat linear infinite;
+        }
+
+        .bat1 { top: 20%; left: -150px; animation-duration: 14s; animation-delay: 0s; }
+        .bat2 { top: 40%; left: -150px; animation-duration: 11s; animation-delay: 3s; }
+        .bat3 { top: 15%; left: -150px; animation-duration: 18s; animation-delay: 7s; }
+        .bat4 { top: 60%; left: -150px; animation-duration: 12s; animation-delay: 2s; }
+        .bat5 { top: 30%; left: -150px; animation-duration: 16s; animation-delay: 9s; transform: scale(0.6); }
+
+        @keyframes fly-bat {
+            0% { transform: translateX(0) translateY(0) scale(0.5); opacity: 0; }
+            5% { opacity: 1; }
+            25% { transform: translateX(500px) translateY(-80px) scale(0.8); }
+            50% { transform: translateX(1000px) translateY(50px) scale(1); }
+            75% { transform: translateX(1500px) translateY(-50px) scale(1.2); }
+            95% { opacity: 1; }
+            100% { transform: translateX(2100px) translateY(100px) scale(1.5); opacity: 0; }
+        }
+
+        /* Clock */
+        .clock-container {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            font-size: 60px;
+            font-family: monospace;
+            font-weight: bold;
+            color: #ffaa00;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #ff5500;
+            box-shadow: 0 0 15px #ff5500;
+            padding: 10px 20px;
+            border-radius: 10px;
+            z-index: 10;
+        }
+
+        .colon {
+            animation: blink 1s step-start infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-container">
+        <div class="clouds"></div>
+        <div class="moon"></div>
+        <div class="overlay"></div>
+        <div class="lightning"></div>
+        
+        <div class="content">
+            <h1>JOIN US FOR HALLOWEEN</h1>
+        </div>
+
+        <div class="witch"></div>
+
+        <!-- Bats -->
+        <div class="bats bat1"></div>
+        <div class="bats bat2"></div>
+        <div class="bats bat3"></div>
+        <div class="bats bat4"></div>
+        <div class="bats bat5"></div>
+
+        <div class="clock-container" id="clock">
+            <span id="hour">12</span><span class="colon">:</span><span id="minute">00</span><span class="colon">:</span><span id="second">00</span>
+        </div>
+    </div>
+
+    <script>
+        // Clock with blinking colon
+        function updateClock() {
+            const now = new Date();
+            let h = now.getHours().toString().padStart(2, '0');
+            let m = now.getMinutes().toString().padStart(2, '0');
+            let s = now.getSeconds().toString().padStart(2, '0');
+            
+            document.getElementById('hour').textContent = h;
+            document.getElementById('minute').textContent = m;
+            document.getElementById('second').textContent = s;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Keyboard controls
+        let isPaused = false;
+        let isLocked = false;
+        let slideDuration = 10;
+        let slideTimer = null;
+
+        function prevSlide() { if(!isLocked) console.log("Previous slide"); }
+        function nextSlide() { if(!isLocked) console.log("Next slide"); }
+        function restartModule() { if(!isLocked) console.log("Restart module (slide 0)"); }
+        function skipModule() { if(!isLocked) console.log("Skip module"); }
+        
+        function resetTimer() {
+            if(slideTimer) clearInterval(slideTimer);
+            if(!isPaused && !isLocked) {
+                slideTimer = setInterval(nextSlide, slideDuration * 1000);
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            const activeTag = document.activeElement.tagName.toLowerCase();
+            if (['input', 'textarea', 'select'].includes(activeTag)) return;
+
+            switch(event.key) {
+                case 'ArrowLeft': prevSlide(); break;
+                case 'ArrowRight': nextSlide(); break;
+                case 'ArrowUp': restartModule(); break;
+                case 'ArrowDown': skipModule(); break;
+                case ' ':
+                case 'Spacebar':
+                    isPaused = !isPaused;
+                    resetTimer();
+                    event.preventDefault();
+                    break;
+                case 'a':
+                case 'A':
+                    window.open('admin.html', '_blank');
+                    break;
+                case 'r':
+                case 'R':
+                    window.open('remote.html', '_blank');
+                    break;
+                case '0':
+                    isLocked = !isLocked;
+                    resetTimer();
+                    break;
+                default:
+                    const num = parseInt(event.key);
+                    if (!isNaN(num) && num >= 1 && num <= 9) {
+                        slideDuration = num * 10;
+                        resetTimer();
+                    }
+                    break;
+            }
+        });
+        
+        resetTimer();
+    </script>
+</body>
+</html>
