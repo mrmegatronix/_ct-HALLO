@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Halloween at Coasters Tavern</title>
+    <title>Halloween at Coasters Tavern - PRO V3</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
 
         body, html {
             margin: 0;
@@ -14,9 +14,10 @@
             overflow: hidden;
             background-color: #000;
             color: #fff;
+            perspective: 1000px;
         }
 
-        /* Ken Burns Background */
+        /* Cinematic Background */
         .bg-container {
             position: absolute;
             top: -5%;
@@ -26,208 +27,242 @@
             background-image: url('coasters_halloween.jpg');
             background-size: cover;
             background-position: center;
-            animation: ken-burns 40s ease-in-out infinite alternate;
+            animation: ken-burns 60s ease-in-out infinite alternate;
             z-index: 1;
         }
 
         @keyframes ken-burns {
             0% { transform: scale(1) translate(0, 0); }
-            100% { transform: scale(1.08) translate(-1%, -1%); }
+            100% { transform: scale(1.1) translate(-2%, -1%); }
         }
 
-        /* Atmospheric Vignette and Darkness */
-        .vignette {
+        /* High-Res Moon using pure CSS gradients */
+        .moon {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(circle at center, transparent 20%, rgba(0, 0, 0, 0.85) 100%);
+            top: 50px; 
+            left: 150px;
+            width: 250px; 
+            height: 250px;
+            background: radial-gradient(circle at 40% 40%, #fffbdd 0%, #ffe699 20%, #d4a000 60%, #805500 100%);
+            border-radius: 50%;
             z-index: 2;
-            pointer-events: none;
+            opacity: 0.9;
+            box-shadow: 0 0 150px rgba(255, 200, 100, 0.6), inset -30px -30px 50px rgba(0,0,0,0.8);
+            animation: moon-glow 8s ease-in-out infinite alternate;
         }
 
-        /* Subtle Fog/Mist Overlay */
-        .fog {
+        @keyframes moon-glow {
+            0% { filter: brightness(1); box-shadow: 0 0 100px rgba(255, 200, 100, 0.4); }
+            100% { filter: brightness(1.3); box-shadow: 0 0 200px rgba(255, 200, 100, 0.8); }
+        }
+
+        /* Parallax Clouds Multi-layered */
+        .cloud-layer {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 30%, transparent 100%);
+            top: -20%; left: -20%;
+            width: 140%; height: 140%;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="f"><feTurbulence type="fractalNoise" baseFrequency="0.01" numOctaves="3"/><feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 3 -1"/></filter><rect width="100%" height="100%" filter="url(%23f)" opacity="0.3"/></svg>');
+            mix-blend-mode: screen;
             z-index: 3;
             pointer-events: none;
+            opacity: 0.4;
         }
 
-        /* Lightning Flashes */
-        .lightning {
+        .clouds-fast { animation: drift-clouds 40s linear infinite; }
+        .clouds-slow { animation: drift-clouds 80s linear infinite reverse; opacity: 0.2; transform: scale(1.5); }
+
+        @keyframes drift-clouds {
+            0% { transform: translateX(0) scale(1); }
+            50% { transform: translateX(-5%) scale(1.1); }
+            100% { transform: translateX(0) scale(1); }
+        }
+
+        /* Realistic Lightning SVG Overlay */
+        .lightning-overlay {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #fff;
-            opacity: 0;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: 4;
             pointer-events: none;
-            animation: lightning-strike 20s infinite;
+            background: radial-gradient(circle at center, rgba(200,200,255,0.8) 0%, transparent 80%);
+            opacity: 0;
+            animation: lightning-flash 15s infinite;
         }
 
-        @keyframes lightning-strike {
-            0%, 91%, 94%, 96%, 100% { opacity: 0; }
-            92%, 95% { opacity: 0.15; }
-            93% { opacity: 0.3; }
-        }
-
-        /* Gentle Ambient Flicker */
-        .ambient-flicker {
+        .lightning-bolt {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5);
+            top: 0; left: 30%;
+            width: 400px;
+            height: 800px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200"><path d="M45,0 L15,80 L40,90 L5,200 L80,100 L55,90 L90,0 Z" fill="%23fff" filter="blur(2px)"/></svg>');
+            background-size: 100% 100%;
+            opacity: 0;
+            animation: lightning-bolt-strike 15s infinite;
             z-index: 5;
-            animation: ambient 6s infinite alternate;
+            transform: rotate(15deg);
+        }
+
+        @keyframes lightning-flash {
+            0%, 93%, 95.5%, 98%, 100% { opacity: 0; }
+            94%, 96.5% { opacity: 0.8; }
+            95%, 97% { opacity: 0.3; }
+        }
+        @keyframes lightning-bolt-strike {
+            0%, 93%, 95.5%, 98%, 100% { opacity: 0; }
+            94%, 96.5% { opacity: 1; filter: drop-shadow(0 0 20px #fff); }
+        }
+
+        /* Authentic Candle Flames */
+        .candle-container {
+            position: absolute;
+            z-index: 6;
             pointer-events: none;
         }
 
-        @keyframes ambient {
-            0% { opacity: 0.3; }
-            100% { opacity: 0.6; }
+        .flame {
+            width: 15px;
+            height: 25px;
+            background: radial-gradient(ellipse at bottom, #fff 10%, #ffcc00 40%, #ff3300 80%, transparent 100%);
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 -10px 20px rgba(255, 100, 0, 0.8), 0 0 50px rgba(255, 150, 0, 0.6);
+            animation: flame-flicker 0.08s infinite alternate;
+            transform-origin: bottom center;
+            mix-blend-mode: screen;
         }
 
-        /* Professional Typography Container */
+        @keyframes flame-flicker {
+            0% { transform: scale(1) rotate(-2deg); opacity: 0.9; }
+            50% { transform: scale(1.1) rotate(1deg) scaleY(1.1); opacity: 1; }
+            100% { transform: scale(0.9) rotate(2deg) scaleY(0.9); opacity: 0.8; }
+        }
+
+        /* Flapping Bats with SVG path animation */
+        .bat {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            z-index: 7;
+            pointer-events: none;
+            opacity: 0.9;
+        }
+
+        .bat svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.8));
+        }
+
+        .bat1 { animation: fly-bat 12s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+        .bat2 { animation: fly-bat 18s cubic-bezier(0.2, 0.1, 0.3, 1) infinite; animation-delay: 5s; transform: scale(0.6); }
+        .bat3 { animation: fly-bat 15s cubic-bezier(0.5, 0, 0.1, 1) infinite reverse; animation-delay: 2s; transform: scale(0.8); }
+
+        @keyframes fly-bat {
+            0% { left: -10%; top: 60%; transform: scale(0.5) rotate(-15deg); }
+            20% { top: 30%; transform: scale(0.7) rotate(0deg); }
+            50% { top: 10%; transform: scale(1) rotate(15deg); }
+            80% { top: 40%; transform: scale(0.8) rotate(-10deg); }
+            100% { left: 110%; top: 20%; transform: scale(0.6) rotate(20deg); }
+        }
+
+        /* Typography - Perfectly fitted */
         .content {
             position: absolute;
-            bottom: 15%;
+            bottom: 12%;
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             text-align: center;
             z-index: 10;
-            animation: elegant-fade 3s ease-out forwards;
-        }
-
-        @keyframes elegant-fade {
-            0% { opacity: 0; transform: translateY(40px) scale(0.98); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .subtitle {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 24px;
-            letter-spacing: 12px;
-            color: #d4af37; /* Elegant gold */
+            font-family: 'Cinzel', serif;
+            font-size: 2vw;
+            letter-spacing: 0.8vw;
+            color: #ffaa00;
             text-transform: uppercase;
             margin-bottom: 10px;
-            opacity: 0.9;
+            text-shadow: 0 0 20px #000;
         }
 
         h1 {
             font-family: 'Cinzel', serif;
             font-weight: 700;
-            font-size: 130px;
-            letter-spacing: 5px;
-            color: #f8f9fa;
+            font-size: 7vw; /* Perfect responsive scaling, guarantees fit */
+            letter-spacing: 0.2vw;
+            color: #ffffff;
             margin: 0;
-            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 40px rgba(212, 175, 55, 0.3);
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.8), 0 0 60px rgba(255, 150, 0, 0.5), 5px 5px 0 #000;
             white-space: nowrap;
+            animation: text-pulse 4s ease-in-out infinite alternate;
         }
 
-        /* Subtle Cinematic Full Moon */
-        .moon {
-            position: absolute;
-            top: 120px; 
-            left: 200px;
-            width: 180px; 
-            height: 180px;
-            background: radial-gradient(circle at 30% 30%, #fffbdd, #d4a000);
-            border-radius: 50%;
-            box-shadow: 0 0 100px rgba(255, 170, 0, 0.4), inset -20px -20px 40px rgba(0,0,0,0.6);
-            z-index: 1;
-            opacity: 0.9;
+        @keyframes text-pulse {
+            0% { filter: drop-shadow(0 0 10px #ff0000); transform: scale(1); }
+            100% { filter: drop-shadow(0 0 40px #ffaa00); transform: scale(1.02); }
         }
 
-        /* Moving Atmospheric Clouds */
-        .moving-clouds {
+        /* Cinematic Vignette */
+        .vignette {
             position: absolute;
-            top: 0; 
-            left: 0;
-            width: 200%; 
-            height: 100%;
-            background-image: 
-                radial-gradient(ellipse at 20% 30%, rgba(200, 200, 255, 0.08) 0%, transparent 40%),
-                radial-gradient(ellipse at 80% 20%, rgba(200, 200, 255, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 40% 70%, rgba(150, 150, 200, 0.04) 0%, transparent 60%),
-                radial-gradient(ellipse at 70% 80%, rgba(150, 150, 200, 0.05) 0%, transparent 50%);
-            background-size: 50% 100%;
-            z-index: 2;
-            animation: drift 50s linear infinite;
-            mix-blend-mode: screen;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.9) 100%);
+            z-index: 9;
             pointer-events: none;
         }
-
-        @keyframes drift {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        /* Distant Witch Silhouette */
-        .witch {
-            position: absolute;
-            z-index: 3;
-            width: 120px;
-            height: 120px;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M80,60 L90,65 L85,75 L15,80 L5,70 L10,65 L30,68 L40,40 C35,30 50,10 60,15 C65,20 60,35 50,45 L45,67 Z" fill="%23000"/></svg>');
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0.8;
-            animation: cinematic-fly 25s linear infinite;
-            pointer-events: none;
-        }
-
-        @keyframes cinematic-fly {
-            0% { transform: translate(-200px, 200px) scale(0.4) rotate(-5deg); opacity: 0; }
-            5% { opacity: 0.6; }
-            95% { opacity: 0.6; }
-            100% { transform: translate(2100px, -50px) scale(0.7) rotate(5deg); opacity: 0; }
-        }
-
-        /* Sleek Bats */
-        .bats {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 40 Q55 20 85 10 Q70 35 95 35 Q75 55 85 75 Q65 60 50 85 Q35 60 15 75 Q25 55 5 35 Q30 35 15 10 Q45 20 50 40 Z" fill="%23000"/></svg>');
-            background-size: contain;
-            background-repeat: no-repeat;
-            z-index: 4;
-            opacity: 0.9;
-            animation: swoop-bat linear infinite;
-            pointer-events: none;
-        }
-
-        .bat1 { top: 25%; left: -100px; animation-duration: 16s; animation-delay: 2s; }
-        .bat2 { top: 15%; left: -100px; animation-duration: 22s; animation-delay: 8s; transform: scale(0.8); }
-        .bat3 { top: 35%; left: -100px; animation-duration: 19s; animation-delay: 14s; transform: scale(0.6); }
-
-        @keyframes swoop-bat {
-            0% { transform: translateX(0) translateY(0) scale(0.5); opacity: 0; }
-            5% { opacity: 0.8; }
-            25% { transform: translateX(500px) translateY(-50px) scale(0.7); }
-            50% { transform: translateX(1000px) translateY(30px) scale(0.9); }
-            75% { transform: translateX(1500px) translateY(-30px) scale(1.1); }
-            95% { opacity: 0.8; }
-            100% { transform: translateX(2100px) translateY(80px) scale(1.3); opacity: 0; }
-        }
-
-        /* ... existing code ... */
     </style>
 </head>
 <body>
     <div class="bg-container"></div>
-    <div class="moving-clouds"></div>
     <div class="moon"></div>
-    <div class="vignette"></div>
-    <div class="fog"></div>
-    <div class="ambient-flicker"></div>
-    <div class="lightning"></div>
+    <div class="cloud-layer clouds-slow"></div>
+    <div class="cloud-layer clouds-fast"></div>
     
-    <div class="witch"></div>
-    <div class="bats bat1"></div>
-    <div class="bats bat2"></div>
-    <div class="bats bat3"></div>
+    <div class="lightning-overlay"></div>
+    <div class="lightning-bolt"></div>
+
+    <div class="vignette"></div>
+
+    <!-- Authentic Candles at specific points in the image (pumpkins and windows) -->
+    <div class="candle-container" style="top: 56%; left: 12%;"><div class="flame"></div></div>
+    <div class="candle-container" style="top: 56%; left: 24%;"><div class="flame" style="animation-delay: 0.1s; transform: scale(0.8);"></div></div>
+    <div class="candle-container" style="top: 61%; left: 34.5%;"><div class="flame" style="animation-delay: 0.4s; transform: scale(1.2);"></div></div>
+    <div class="candle-container" style="top: 61%; left: 37.5%;"><div class="flame" style="animation-delay: 0.2s;"></div></div>
+    <div class="candle-container" style="top: 61%; left: 51%;"><div class="flame" style="animation-delay: 0.7s; transform: scale(1.3);"></div></div>
+    <div class="candle-container" style="top: 54%; left: 59%;"><div class="flame" style="animation-delay: 0.5s;"></div></div>
+    <div class="candle-container" style="top: 53.5%; left: 79%;"><div class="flame" style="animation-delay: 0.3s;"></div></div>
+
+    <!-- Flapping Bats using SVG animation -->
+    <div class="bat bat1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+            <path fill="#000">
+                <animate attributeName="d" 
+                    values="M50 40 Q55 20 85 10 Q70 35 95 35 Q75 55 85 75 Q65 60 50 85 Q35 60 15 75 Q25 55 5 35 Q30 35 15 10 Q45 20 50 40 Z;
+                            M50 40 Q55 35 85 45 Q70 50 95 65 Q75 70 85 90 Q65 75 50 85 Q35 75 15 90 Q25 70 5 65 Q30 50 15 45 Q45 35 50 40 Z;
+                            M50 40 Q55 20 85 10 Q70 35 95 35 Q75 55 85 75 Q65 60 50 85 Q35 60 15 75 Q25 55 5 35 Q30 35 15 10 Q45 20 50 40 Z" 
+                    dur="0.3s" repeatCount="indefinite" />
+            </path>
+        </svg>
+    </div>
+    <div class="bat bat2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+            <path fill="#000">
+                <animate attributeName="d" 
+                    values="M50 40 Q55 20 85 10 Q70 35 95 35 Q75 55 85 75 Q65 60 50 85 Q35 60 15 75 Q25 55 5 35 Q30 35 15 10 Q45 20 50 40 Z;
+                            M50 40 Q55 35 85 45 Q70 50 95 65 Q75 70 85 90 Q65 75 50 85 Q35 75 15 90 Q25 70 5 65 Q30 50 15 45 Q45 35 50 40 Z;
+                            M50 40 Q55 20 85 10 Q70 35 95 35 Q75 55 85 75 Q65 60 50 85 Q35 60 15 75 Q25 55 5 35 Q30 35 15 10 Q45 20 50 40 Z" 
+                    dur="0.25s" repeatCount="indefinite" />
+            </path>
+        </svg>
+    </div>
+    <div class="bat bat3">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+            <path fill="#000">
+                <animate attributeName="d" 
+                    values="M50 40 Q55 20 85 10 Q70 35 95 35 Q75 55 85 75 Q65 60 50 85 Q35 60 15 75 Q25 55 5 35 Q30 35 15 10 Q45 20 50 40 Z;
+                            M50 40 Q55 35 85 45 Q70 50 95 65 Q75 70 85 90 Q65 75 50 85 Q35 75 15 90 Q25 70 5 65 Q30 50 15 45 Q45 35 50 40 Z;
+                            M50 40 Q55 20 85 10 Q70 35 95 35 Q75 55 85 75 Q65 60 50 85 Q35 60 15 75 Q25 55 5 35 Q30 35 15 10 Q45 20 50 40 Z" 
+                    dur="0.35s" repeatCount="indefinite" />
+            </path>
+        </svg>
+    </div>
 
     <div class="content">
         <div class="subtitle">Coasters Tavern Presents</div>
