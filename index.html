@@ -167,12 +167,12 @@
             ctx.restore();
         }
 
-        function drawWitch(ctx, x, y, scale) {
-            if (!witchImg.complete) return;
+        function drawWitch(ctx, x, y, scale, angle) {
+            if (!witchImg.complete || witchImg.width === 0) return;
             ctx.save();
             ctx.translate(x, y);
             ctx.scale(scale, scale);
-            ctx.rotate(Math.sin(time) * 0.1);
+            ctx.rotate(angle);
             
             // Draw authentic witch image
             ctx.drawImage(witchImg, -witchImg.width / 2, -witchImg.height / 2);
@@ -249,14 +249,29 @@
                 drawBat(ctx, b.x, b.y, b.scale, wingAngle);
             });
 
-            // Draw Witch
+            // Draw Witch (Smooth Randomized Flight)
             witch.x -= witch.speed;
-            witch.y += Math.cos(time * 0.5) * 0.5;
-            if (witch.x < -200) {
+            
+            // Randomly pick a new target altitude
+            if (Math.random() < 0.01) {
+                witch.targetY = Math.random() * 300 + 50;
+            }
+            if (witch.targetY === undefined) witch.targetY = 300;
+            
+            // Ease smoothly towards the target altitude
+            witch.y += (witch.targetY - witch.y) * 0.015;
+            
+            // Angle broom based on vertical descent/ascent
+            let flightAngle = (witch.y - witch.targetY) * 0.005;
+
+            // Reset when flying off screen
+            if (witch.x < -300) {
                 witch.x = 2100;
                 witch.y = Math.random() * 300 + 100;
+                witch.targetY = witch.y;
             }
-            drawWitch(ctx, witch.x, witch.y, witch.scale);
+            
+            drawWitch(ctx, witch.x, witch.y, witch.scale, flightAngle);
 
             requestAnimationFrame(render);
         }
