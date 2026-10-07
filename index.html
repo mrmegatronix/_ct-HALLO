@@ -125,16 +125,110 @@
             white-space: nowrap;
         }
 
+        /* Subtle Cinematic Full Moon */
+        .moon {
+            position: absolute;
+            top: 120px; 
+            left: 200px;
+            width: 180px; 
+            height: 180px;
+            background: radial-gradient(circle at 30% 30%, #fffbdd, #d4a000);
+            border-radius: 50%;
+            box-shadow: 0 0 100px rgba(255, 170, 0, 0.4), inset -20px -20px 40px rgba(0,0,0,0.6);
+            z-index: 1;
+            opacity: 0.9;
+        }
+
+        /* Moving Atmospheric Clouds */
+        .moving-clouds {
+            position: absolute;
+            top: 0; 
+            left: 0;
+            width: 200%; 
+            height: 100%;
+            background-image: 
+                radial-gradient(ellipse at 20% 30%, rgba(200, 200, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(ellipse at 80% 20%, rgba(200, 200, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 70%, rgba(150, 150, 200, 0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(150, 150, 200, 0.05) 0%, transparent 50%);
+            background-size: 50% 100%;
+            z-index: 2;
+            animation: drift 50s linear infinite;
+            mix-blend-mode: screen;
+            pointer-events: none;
+        }
+
+        @keyframes drift {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Distant Witch Silhouette */
+        .witch {
+            position: absolute;
+            z-index: 3;
+            width: 120px;
+            height: 120px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M80,60 L90,65 L85,75 L15,80 L5,70 L10,65 L30,68 L40,40 C35,30 50,10 60,15 C65,20 60,35 50,45 L45,67 Z" fill="%23000"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.8;
+            animation: cinematic-fly 25s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes cinematic-fly {
+            0% { transform: translate(-200px, 200px) scale(0.4) rotate(-5deg); opacity: 0; }
+            5% { opacity: 0.6; }
+            95% { opacity: 0.6; }
+            100% { transform: translate(2100px, -50px) scale(0.7) rotate(5deg); opacity: 0; }
+        }
+
+        /* Sleek Bats */
+        .bats {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 40 Q55 20 85 10 Q70 35 95 35 Q75 55 85 75 Q65 60 50 85 Q35 60 15 75 Q25 55 5 35 Q30 35 15 10 Q45 20 50 40 Z" fill="%23000"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 4;
+            opacity: 0.9;
+            animation: swoop-bat linear infinite;
+            pointer-events: none;
+        }
+
+        .bat1 { top: 25%; left: -100px; animation-duration: 16s; animation-delay: 2s; }
+        .bat2 { top: 15%; left: -100px; animation-duration: 22s; animation-delay: 8s; transform: scale(0.8); }
+        .bat3 { top: 35%; left: -100px; animation-duration: 19s; animation-delay: 14s; transform: scale(0.6); }
+
+        @keyframes swoop-bat {
+            0% { transform: translateX(0) translateY(0) scale(0.5); opacity: 0; }
+            5% { opacity: 0.8; }
+            25% { transform: translateX(500px) translateY(-50px) scale(0.7); }
+            50% { transform: translateX(1000px) translateY(30px) scale(0.9); }
+            75% { transform: translateX(1500px) translateY(-30px) scale(1.1); }
+            95% { opacity: 0.8; }
+            100% { transform: translateX(2100px) translateY(80px) scale(1.3); opacity: 0; }
+        }
+
         /* ... existing code ... */
     </style>
 </head>
 <body>
     <div class="bg-container"></div>
+    <div class="moving-clouds"></div>
+    <div class="moon"></div>
     <div class="vignette"></div>
     <div class="fog"></div>
     <div class="ambient-flicker"></div>
     <div class="lightning"></div>
     
+    <div class="witch"></div>
+    <div class="bats bat1"></div>
+    <div class="bats bat2"></div>
+    <div class="bats bat3"></div>
+
     <div class="content">
         <div class="subtitle">Coasters Tavern Presents</div>
         <h1>JOIN US FOR HALLOWEEN</h1>
