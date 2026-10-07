@@ -103,6 +103,34 @@
             animation: flicker 8s infinite;
         }
 
+        /* Candle Glow Effect */
+        .candle-glow {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(255, 150, 0, 0.6) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: candle-flicker 0.5s infinite alternate;
+            mix-blend-mode: screen;
+            z-index: 2;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+        }
+
+        .candle-glow.large {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 120, 0, 0.5) 0%, transparent 70%);
+        }
+
+        @keyframes candle-flicker {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            25% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.7; }
+            75% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.9; }
+            100% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.75; }
+        }
+
         /* Lightning effect */
         .lightning {
             position: absolute;
@@ -249,6 +277,16 @@
         <div class="content">
             <h1>JOIN US FOR HALLOWEEN</h1>
         </div>
+
+        <!-- Animated Candle Glows -->
+        <div class="candle-glow" style="top: 56.5%; left: 12%; animation-delay: 0.1s;"></div>
+        <div class="candle-glow" style="top: 56.5%; left: 24%; animation-delay: 0.3s;"></div>
+        <div class="candle-glow large" style="top: 62%; left: 33%; animation-delay: 0.5s;"></div> <!-- Pumpkins left of door -->
+        <div class="candle-glow large" style="top: 61%; left: 37%; animation-delay: 0.2s;"></div> <!-- Pumpkins left of door -->
+        <div class="candle-glow large" style="top: 61%; left: 51%; animation-delay: 0.7s;"></div> <!-- Pumpkins right of door -->
+        <div class="candle-glow large" style="top: 61%; left: 55%; animation-delay: 0.4s;"></div> <!-- Pumpkins right of door -->
+        <div class="candle-glow" style="top: 54%; left: 59%; animation-delay: 0.8s;"></div>
+        <div class="candle-glow" style="top: 53.5%; left: 79%; animation-delay: 0.6s;"></div>
 
         <div class="witch"></div>
 
