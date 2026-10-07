@@ -17,9 +17,9 @@
 
         .bg {
             position: absolute;
-            top: -5%; left: -5%;
-            width: 110%; height: 110%;
-            background-image: url('coasters_halloween.jpg?v=4');
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: url('coasters_halloween.jpg?v=5');
             background-size: cover;
             background-position: center;
             z-index: 1;
@@ -28,7 +28,7 @@
 
         @keyframes breathe {
             0% { transform: scale(1); }
-            100% { transform: scale(1.05); }
+            100% { transform: scale(1.02); }
         }
 
         canvas {
@@ -56,15 +56,6 @@
             font-family: 'Cinzel', serif;
         }
 
-        .subtitle {
-            font-size: 24px;
-            letter-spacing: 15px;
-            color: #d4af37;
-            text-shadow: 0 0 20px #000;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
         h1 {
             font-size: 100px;
             letter-spacing: 10px;
@@ -74,6 +65,13 @@
             text-shadow: 0 0 50px rgba(255,100,0,0.8), 0 5px 15px #000;
             white-space: nowrap;
         }
+        
+        h1 span {
+            transition: opacity 0.1s ease-in;
+            opacity: 0;
+            display: inline-block;
+            margin: 0 15px;
+        }
     </style>
 </head>
 <body>
@@ -82,7 +80,12 @@
     <div class="vignette"></div>
 
     <div class="content">
-        <h1>JOIN US FOR HALLOWEEN</h1>
+        <h1>
+            <span id="word0">JOIN</span>
+            <span id="word1">US</span>
+            <span id="word2">FOR</span>
+            <span id="word3">HALLOWEEN</span>
+        </h1>
     </div>
 
     <script>
@@ -93,14 +96,25 @@
 
         let time = 0;
 
-        // Bats
-        const bats = Array.from({length: 6}, () => ({
+        // Foreground Bats
+        const bats = Array.from({length: 8}, () => ({
             x: Math.random() * 1920,
             y: Math.random() * 400 + 50,
-            speed: Math.random() * 2 + 3,
+            speed: Math.random() * 3 + 3,
             scale: Math.random() * 0.4 + 0.3,
             phase: Math.random() * Math.PI * 2
         }));
+
+        // Distant Bats crossing the moon
+        const distantBats = Array.from({length: 15}, () => ({
+            x: Math.random() * 1920,
+            y: Math.random() * 200 + 100, // around the moon
+            speed: Math.random() * 1.5 + 1.5,
+            scale: Math.random() * 0.15 + 0.05,
+            phase: Math.random() * Math.PI * 2
+        }));
+        
+        const allBats = [...bats, ...distantBats];
 
         // Witch Image Loading
         const witchImg = new Image();
@@ -120,49 +134,89 @@
             opacity: Math.random() * 0.2 + 0.1
         }));
 
+        // Owls in the trees
+        const owls = [
+            {x: 180, y: 420, timer: Math.random() * 100},
+            {x: 320, y: 350, timer: Math.random() * 100},
+            {x: 1650, y: 480, timer: Math.random() * 100},
+            {x: 1800, y: 390, timer: Math.random() * 100}
+        ];
+
         // Lightning state
         let lightning = 0;
         let lightningPath = [];
+        let revealedWords = 0;
+        const totalWords = 4;
 
         function generateLightning() {
             lightningPath = [];
-            let x = Math.random() * 1920;
-            let y = 0;
-            lightningPath.push({x, y});
-            while(y < 1080) {
-                x += (Math.random() - 0.5) * 200;
-                y += Math.random() * 100 + 50;
-                lightningPath.push({x, y});
+            let startX = Math.random() * 1920;
+            let targetX = 960 + (Math.random() - 0.5) * 600; // Strike towards foreground text area
+            
+            let cx = startX;
+            let cy = 0;
+            lightningPath.push({x: cx, y: cy});
+            
+            while(cy < 1080) {
+                cx += (Math.random() - 0.5) * 200 + (targetX - cx) * 0.15; // Pull towards target
+                cy += Math.random() * 80 + 50;
+                lightningPath.push({x: cx, y: cy});
             }
             lightning = 1.0;
+
+            // Reveal word on strike
+            if (revealedWords < totalWords) {
+                document.getElementById('word' + revealedWords).style.opacity = 1;
+                revealedWords++;
+            }
         }
 
-        setInterval(() => {
-            if (Math.random() > 0.4) generateLightning();
-        }, 10000);
+        // Sequential strikes to reveal message, then random
+        setTimeout(() => {
+            let strikeInterval = setInterval(() => {
+                generateLightning();
+                if (revealedWords >= totalWords) {
+                    clearInterval(strikeInterval);
+                    setInterval(() => {
+                        if (Math.random() > 0.4) generateLightning();
+                    }, 8000);
+                }
+            }, 1200); // Fast sequence to read word by word
+        }, 1000);
 
         function drawBat(ctx, x, y, scale, wingAngle) {
             ctx.save();
             ctx.translate(x, y);
             ctx.scale(scale, scale);
             ctx.fillStyle = '#050505';
+            
+            // Body
             ctx.beginPath();
             ctx.ellipse(0, 0, 10, 25, 0, 0, Math.PI * 2);
             ctx.fill();
+            
+            // Sharp Pointy Wings
             ctx.save();
             ctx.scale(1, Math.cos(wingAngle));
+            
+            // Left wing
             ctx.beginPath();
             ctx.moveTo(0, -10);
-            ctx.quadraticCurveTo(-60, -50, -120, -20);
-            ctx.quadraticCurveTo(-80, 20, -40, 10);
-            ctx.quadraticCurveTo(-20, 30, 0, 10);
+            ctx.quadraticCurveTo(-40, -40, -120, -40); // Sharp tip
+            ctx.quadraticCurveTo(-80, -10, -100, 10);
+            ctx.quadraticCurveTo(-60, -5, -40, 20);
+            ctx.quadraticCurveTo(-20, 0, 0, 10);
             ctx.fill();
+            
+            // Right wing
             ctx.beginPath();
             ctx.moveTo(0, -10);
-            ctx.quadraticCurveTo(60, -50, 120, -20);
-            ctx.quadraticCurveTo(80, 20, 40, 10);
-            ctx.quadraticCurveTo(20, 30, 0, 10);
+            ctx.quadraticCurveTo(40, -40, 120, -40);
+            ctx.quadraticCurveTo(80, -10, 100, 10);
+            ctx.quadraticCurveTo(60, -5, 40, 20);
+            ctx.quadraticCurveTo(20, 0, 0, 10);
             ctx.fill();
+            
             ctx.restore();
             ctx.restore();
         }
@@ -173,10 +227,7 @@
             ctx.translate(x, y);
             ctx.scale(scale, scale);
             ctx.rotate(angle);
-            
-            // Draw authentic witch image
             ctx.drawImage(witchImg, -witchImg.width / 2, -witchImg.height / 2);
-            
             ctx.restore();
         }
 
@@ -198,6 +249,27 @@
             ctx.globalCompositeOperation = 'source-over';
         }
 
+        function drawOwls(ctx) {
+            owls.forEach(owl => {
+                owl.timer += 0.5;
+                let eyeScale = 1;
+                // Blink closed randomly
+                if (owl.timer > 100) {
+                    if (owl.timer < 105) eyeScale = 0.1;
+                    else owl.timer = 0;
+                }
+                
+                ctx.fillStyle = '#ffaa00';
+                ctx.shadowColor = '#ffaa00';
+                ctx.shadowBlur = 15;
+                ctx.beginPath();
+                ctx.ellipse(owl.x, owl.y, 3, 4 * eyeScale, 0, 0, Math.PI*2);
+                ctx.ellipse(owl.x + 16, owl.y, 3, 4 * eyeScale, 0, 0, Math.PI*2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+            });
+        }
+
         function render() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             time += 0.05;
@@ -215,8 +287,20 @@
             ctx.fill();
             ctx.globalCompositeOperation = 'source-over';
 
+            // Draw Distant and Foreground Bats
+            allBats.forEach(b => {
+                b.x -= b.speed;
+                b.y += Math.sin(time + b.phase) * 1.5;
+                if (b.x < -150) b.x = 2100;
+                const wingAngle = time * 6 + b.phase;
+                drawBat(ctx, b.x, b.y, b.scale, wingAngle);
+            });
+
             // Draw Fog
             drawFog(ctx);
+            
+            // Draw Owls
+            drawOwls(ctx);
 
             // Draw Lightning
             if (lightning > 0) {
@@ -225,9 +309,9 @@
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 ctx.strokeStyle = `rgba(255, 255, 255, ${lightning})`;
-                ctx.lineWidth = 5;
+                ctx.lineWidth = 6;
                 ctx.shadowColor = '#fff';
-                ctx.shadowBlur = 30;
+                ctx.shadowBlur = 40;
                 
                 ctx.beginPath();
                 ctx.moveTo(lightningPath[0].x, lightningPath[0].y);
@@ -240,37 +324,18 @@
                 ctx.globalCompositeOperation = 'source-over';
             }
 
-            // Draw Bats
-            bats.forEach(b => {
-                b.x -= b.speed;
-                b.y += Math.sin(time + b.phase) * 1.5;
-                if (b.x < -150) b.x = 2100;
-                const wingAngle = time * 6 + b.phase;
-                drawBat(ctx, b.x, b.y, b.scale, wingAngle);
-            });
-
             // Draw Witch (Smooth Randomized Flight)
             witch.x -= witch.speed;
-            
-            // Randomly pick a new target altitude
-            if (Math.random() < 0.01) {
-                witch.targetY = Math.random() * 300 + 50;
-            }
+            if (Math.random() < 0.01) witch.targetY = Math.random() * 300 + 50;
             if (witch.targetY === undefined) witch.targetY = 300;
-            
-            // Ease smoothly towards the target altitude
             witch.y += (witch.targetY - witch.y) * 0.015;
-            
-            // Angle broom based on vertical descent/ascent
             let flightAngle = (witch.y - witch.targetY) * 0.005;
 
-            // Reset when flying off screen
             if (witch.x < -300) {
                 witch.x = 2100;
                 witch.y = Math.random() * 300 + 100;
                 witch.targetY = witch.y;
             }
-            
             drawWitch(ctx, witch.x, witch.y, witch.scale, flightAngle);
 
             requestAnimationFrame(render);
