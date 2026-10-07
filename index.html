@@ -16,6 +16,7 @@
         }
 
         @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Nosifer&display=swap');
 
         .slide-container {
             width: 1920px;
@@ -166,16 +167,15 @@
         }
 
         h1 {
-            font-family: 'Creepster', cursive;
-            font-size: 200px;
+            font-family: 'Nosifer', cursive;
+            font-size: 110px;
             color: #ffaa00;
             text-shadow: 0 0 30px #000, 0 0 50px #ff3300, 5px 5px 0px #000;
             margin: 0;
             padding: 20px;
             white-space: nowrap;
-            text-overflow: ellipsis;
-            max-width: 1800px;
-            overflow: hidden;
+            max-width: 1900px;
+            overflow: visible; /* Prevent ellipsis clipping */
             animation: zombie-rise 15s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
         }
 
@@ -216,7 +216,7 @@
             position: absolute;
             width: 100px;
             height: 100px;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M10 50 Q 30 20 50 50 Q 70 20 90 50 Q 70 80 50 60 Q 30 80 10 50 Z" fill="%23000"/></svg>');
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 40 Q55 20 85 10 Q70 35 95 35 Q75 55 85 75 Q65 60 50 85 Q35 60 15 75 Q25 55 5 35 Q30 35 15 10 Q45 20 50 40 Z" fill="%23000"/></svg>');
             background-size: contain;
             background-repeat: no-repeat;
             z-index: 7;
