@@ -67,10 +67,25 @@
         }
         
         h1 span {
-            transition: opacity 0.1s ease-in;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             opacity: 0;
+            transform: translateY(30px) scale(0.9) rotateX(45deg);
+            filter: blur(10px);
             display: inline-block;
             margin: 0 15px;
+        }
+
+        h1 span.revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1) rotateX(0deg);
+            filter: blur(0px);
+        }
+
+        h1 span.exit {
+            transition: all 1.5s ease-in;
+            opacity: 0;
+            transform: translateY(-40px) scale(1.1) rotateX(-45deg);
+            filter: blur(15px);
         }
     </style>
 </head>
@@ -147,6 +162,7 @@
         let lightningPath = [];
         let revealedWords = 0;
         const totalWords = 4;
+        let isTextCycleActive = false;
 
         function generateLightning() {
             lightningPath = [];
@@ -165,24 +181,53 @@
             lightning = 1.0;
 
             // Reveal word on strike
-            if (revealedWords < totalWords) {
-                document.getElementById('word' + revealedWords).style.opacity = 1;
+            if (isTextCycleActive && revealedWords < totalWords) {
+                let el = document.getElementById('word' + revealedWords);
+                el.classList.remove('exit');
+                el.classList.add('revealed');
                 revealedWords++;
             }
         }
 
-        // Sequential strikes to reveal message, then random
-        setTimeout(() => {
+        function runTextCycle() {
+            revealedWords = 0;
+            isTextCycleActive = true;
+            
+            // Reset state
+            for(let i=0; i<totalWords; i++) {
+                let el = document.getElementById('word' + i);
+                el.classList.remove('revealed', 'exit');
+            }
+
+            // Sequential strikes to reveal message
             let strikeInterval = setInterval(() => {
                 generateLightning();
                 if (revealedWords >= totalWords) {
                     clearInterval(strikeInterval);
-                    setInterval(() => {
-                        if (Math.random() > 0.4) generateLightning();
-                    }, 8000);
+                    isTextCycleActive = false;
+                    
+                    // Wait 6 seconds, then animate exit sequentially
+                    setTimeout(() => {
+                        for(let i=0; i<totalWords; i++) {
+                            setTimeout(() => {
+                                document.getElementById('word' + i).classList.add('exit');
+                            }, i * 200); // Stagger the exit
+                        }
+                        
+                        // Restart the cycle after exit finishes
+                        setTimeout(runTextCycle, 3000);
+                    }, 6000);
                 }
-            }, 1200); // Fast sequence to read word by word
-        }, 1000);
+            }, 1200);
+        }
+
+        // Random background strikes when not revealing text
+        setInterval(() => {
+            if (!isTextCycleActive && Math.random() > 0.4) generateLightning();
+        }, 5000);
+
+        // Start initial cycle
+        setTimeout(runTextCycle, 1000);
 
         function drawBat(ctx, x, y, scale, wingAngle) {
             ctx.save();
