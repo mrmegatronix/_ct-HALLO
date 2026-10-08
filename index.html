@@ -172,13 +172,7 @@
         witchImg.src = 'witch.png';
         let witch = { x: -200, y: 300, speed: 2.0, scale: 0.6 };
 
-        // Load Professional Monster SVGs
-        const monsterImages = [];
-        ['ghost.svg', 'reaper.svg', 'skeleton.svg', 'vampire.svg', 'werewolf.svg', 'zombie.svg'].forEach(src => {
-            let img = new Image();
-            img.src = src;
-            monsterImages.push(img);
-        });
+
 
         // Fog particles
         const fogs = Array.from({length: 20}, () => ({
@@ -377,11 +371,9 @@
             });
         }
 
-        // Cats
-        let cats = [];
 
-        // Walking Monsters
-        let monsters = [];
+
+
 
         function render() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -432,67 +424,6 @@
             ctx.fill();
 
             ctx.globalCompositeOperation = 'source-over';
-
-            // Spawn & Draw Walking Monsters using high-res SVGs
-            if (Math.random() < 0.015 && monsterImages.length > 0) {
-                monsters.push({
-                    img: monsterImages[Math.floor(Math.random() * monsterImages.length)],
-                    x: Math.random() < 0.5 ? -100 : 2020,
-                    y: 800 + Math.random() * 250,
-                    targetX: 960 + (Math.random() * 80 - 40),
-                    targetY: 640,
-                    speed: 0.8 + Math.random() * 1.0,
-                    frame: 0
-                });
-            }
-
-            monsters.sort((a,b) => a.y - b.y).forEach((m, i) => {
-                m.frame += 0.1;
-                let dx = m.targetX - m.x;
-                let dy = m.targetY - m.y;
-                let dist = Math.sqrt(dx*dx + dy*dy);
-                
-                if (dist < 10) { monsters.splice(i, 1); return; }
-                
-                m.x += (dx/dist) * m.speed;
-                m.y += (dy/dist) * m.speed;
-                
-                let scale = 0.5 + ((m.y - 640) / 450) * 0.8;
-                
-                ctx.save();
-                ctx.translate(m.x, m.y);
-                ctx.scale(dx > 0 ? scale : -scale, scale); 
-                
-                if (m.img.complete && m.img.width > 0) {
-                    let bob = Math.sin(m.frame) * 4;
-                    ctx.drawImage(m.img, -40, -80 + bob, 80, 80);
-                }
-                ctx.restore();
-            });
-
-            // Spawn & Draw Cats
-            if (Math.random() < 0.01) {
-                cats.push({
-                    x: Math.random() < 0.5 ? -20 : 1940,
-                    y: 750 + Math.random() * 250,
-                    dir: 1, speed: 4 + Math.random() * 4, frame: 0
-                });
-                let c = cats[cats.length-1];
-                if (c.x > 1000) c.dir = -1;
-            }
-            
-            cats.forEach((c, i) => {
-                c.frame += 0.4;
-                c.x += c.speed * c.dir;
-                if (c.x < -100 || c.x > 2000) cats.splice(i, 1);
-                
-                ctx.save();
-                ctx.translate(c.x, c.y);
-                ctx.scale(c.dir, 1);
-                ctx.fillStyle = '#000';
-                drawCat(ctx, c.frame);
-                ctx.restore();
-            });
 
             // Draw Distant and Foreground Bats
             allBats.forEach(b => {
