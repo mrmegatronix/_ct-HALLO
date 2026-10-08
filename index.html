@@ -72,7 +72,7 @@
             transform: translateY(30px) scale(0.9) rotateX(45deg);
             filter: blur(10px);
             display: inline-block;
-            margin: 0 15px;
+            margin: 0 0.15em;
         }
 
         h1 span.revealed {
@@ -95,12 +95,7 @@
     <div class="vignette"></div>
 
     <div class="content">
-        <h1>
-            <span id="word0">JOIN</span>
-            <span id="word1">US</span>
-            <span id="word2">FOR</span>
-            <span id="word3">HALLOWEEN</span>
-        </h1>
+        <h1></h1>
     </div>
 
     <script>
@@ -110,6 +105,15 @@
         canvas.height = 1080;
 
         let time = 0;
+
+        // Message Cycling
+        const messages = [
+            ["JOIN", "US", "FOR", "HALLOWEEN"],
+            ["SPOOKTACULAR", "TRIVIA", "NIGHT,", "WEDNESDAY", "28TH", "FROM", "7PM"],
+            ["BOOK", "NOW", "IF", "YOU", "DARE"],
+            ["WE", "WOULDN'T", "WANT", "YOU", "TO", "GET", "A", "SCARE!"]
+        ];
+        let currentMessageIndex = 0;
 
         // Foreground Bats
         const bats = Array.from({length: 8}, () => ({
@@ -161,7 +165,7 @@
         let lightning = 0;
         let lightningPath = [];
         let revealedWords = 0;
-        const totalWords = 4;
+        let totalWords = 0;
         let isTextCycleActive = false;
 
         function generateLightning() {
@@ -183,21 +187,30 @@
             // Reveal word on strike
             if (isTextCycleActive && revealedWords < totalWords) {
                 let el = document.getElementById('word' + revealedWords);
-                el.classList.remove('exit');
-                el.classList.add('revealed');
+                if (el) {
+                    el.classList.remove('exit');
+                    el.classList.add('revealed');
+                }
                 revealedWords++;
             }
         }
 
         function runTextCycle() {
+            let words = messages[currentMessageIndex];
+            totalWords = words.length;
             revealedWords = 0;
             isTextCycleActive = true;
             
-            // Reset state
+            let charCount = words.join(" ").length;
+            let fontSize = charCount > 40 ? 40 : (charCount > 25 ? 60 : 100);
+            const h1 = document.querySelector('.content h1');
+            h1.style.fontSize = fontSize + 'px';
+            
+            let html = '';
             for(let i=0; i<totalWords; i++) {
-                let el = document.getElementById('word' + i);
-                el.classList.remove('revealed', 'exit');
+                html += `<span id="word${i}">${words[i]}</span>`;
             }
+            h1.innerHTML = html;
 
             // Sequential strikes to reveal message
             let strikeInterval = setInterval(() => {
@@ -210,9 +223,12 @@
                     setTimeout(() => {
                         for(let i=0; i<totalWords; i++) {
                             setTimeout(() => {
-                                document.getElementById('word' + i).classList.add('exit');
-                            }, i * 200); // Stagger the exit
+                                let el = document.getElementById('word' + i);
+                                if(el) el.classList.add('exit');
+                            }, i * 150); // Stagger the exit
                         }
+                        
+                        currentMessageIndex = (currentMessageIndex + 1) % messages.length;
                         
                         // Restart the cycle after exit finishes
                         setTimeout(runTextCycle, 3000);
