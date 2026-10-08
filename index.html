@@ -64,13 +64,13 @@
             margin: 0;
             text-transform: uppercase;
             white-space: normal;
-            line-height: 1.1;
+            line-height: 1.0;
             -webkit-text-stroke: 4px #000;
         }
         
         .text-line {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 2vh;
         }
         
         h1 span {
@@ -234,8 +234,14 @@
             
             const h1 = document.querySelector('.content h1');
             h1.style.color = '#ffffff';
-            h1.style.textShadow = `0 0 40px rgba(255, 255, 255, 0.8), 0 5px 15px #000`;
-            h1.style.fontSize = msg.lines.length > 2 ? '65px' : '85px';
+            h1.style.textShadow = `0 0 30px #fff, 0 10px 20px #000, 0 0 10px #000`;
+            
+            // Dynamically calculate font size in vw so the longest line fills exactly 95% of the screen width
+            let maxLineLength = Math.max(...msg.lines.map(line => line.join(" ").length));
+            let fontSizeVW = 95 / (maxLineLength * 0.45); // Creepster aspect ratio approximation
+            fontSizeVW = Math.min(fontSizeVW, 22); // Cap vertical height
+            h1.style.fontSize = fontSizeVW + 'vw';
+            h1.style.letterSpacing = '2px';
             
             let html = '';
             let wordIdx = 0;
