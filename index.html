@@ -262,10 +262,10 @@
 
         // Owls in the trees
         const owls = [
-            {x: 180, y: 420, timer: Math.random() * 100},
-            {x: 320, y: 350, timer: Math.random() * 100},
-            {x: 1650, y: 480, timer: Math.random() * 100},
-            {x: 1800, y: 390, timer: Math.random() * 100}
+            {x: 180, y: 390, scale: 0.95, timer: Math.random() * 100},
+            {x: 320, y: 320, scale: 0.8, timer: Math.random() * 100},
+            {x: 1650, y: 440, scale: 1.0, timer: Math.random() * 100},
+            {x: 1800, y: 360, scale: 0.85, timer: Math.random() * 100}
         ];
 
         // Lightning state
@@ -464,15 +464,81 @@
                     if (owl.timer < 105) eyeScale = 0.1;
                     else owl.timer = 0;
                 }
-                
-                ctx.fillStyle = '#ffaa00';
-                ctx.strokeStyle = 'rgba(0,0,0,0.8)';
-                ctx.lineWidth = 2;
-                
-                // Left eye (Almond/Alien shaped, tilted inward)
+
                 ctx.save();
                 ctx.translate(owl.x, owl.y);
-                ctx.rotate(0.35); 
+                const s = owl.scale || 1.0;
+                ctx.scale(s, s);
+
+                // Black Owl Silhouette
+                ctx.fillStyle = '#050505';
+                ctx.strokeStyle = '#050505';
+
+                // Tree branch under owl
+                ctx.beginPath();
+                ctx.moveTo(-35, 54);
+                ctx.quadraticCurveTo(0, 52, 35, 56);
+                ctx.lineWidth = 5;
+                ctx.stroke();
+
+                // Tail feathers
+                ctx.beginPath();
+                ctx.moveTo(-6, 42);
+                ctx.lineTo(0, 68);
+                ctx.lineTo(6, 42);
+                ctx.fill();
+
+                // Owl Body
+                ctx.beginPath();
+                ctx.ellipse(0, 28, 16, 24, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Folded Wings
+                ctx.beginPath();
+                ctx.ellipse(-12, 28, 6, 20, 0.12, 0, Math.PI * 2);
+                ctx.ellipse(12, 28, 6, 20, -0.12, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Owl Head
+                ctx.beginPath();
+                ctx.ellipse(0, 0, 18, 14, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Ear Tufts / Horns
+                ctx.beginPath();
+                // Left tuft
+                ctx.moveTo(-11, -8);
+                ctx.lineTo(-20, -25);
+                ctx.lineTo(-4, -12);
+                // Right tuft
+                ctx.moveTo(4, -12);
+                ctx.lineTo(20, -25);
+                ctx.lineTo(11, -8);
+                ctx.fill();
+
+                // Talons gripping branch
+                ctx.fillStyle = '#111111';
+                ctx.beginPath();
+                ctx.arc(-6, 52, 3, 0, Math.PI * 2);
+                ctx.arc(6, 52, 3, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Beak
+                ctx.beginPath();
+                ctx.moveTo(-2, 3);
+                ctx.lineTo(0, 9);
+                ctx.lineTo(2, 3);
+                ctx.fill();
+
+                // Glowing Eyes
+                ctx.fillStyle = '#ffaa00';
+                ctx.strokeStyle = 'rgba(0,0,0,0.95)';
+                ctx.lineWidth = 2;
+
+                // Left Eye (Almond/Alien shaped, tilted inward)
+                ctx.save();
+                ctx.translate(-7, 0);
+                ctx.rotate(0.35);
                 ctx.beginPath();
                 ctx.moveTo(-6, 0);
                 ctx.quadraticCurveTo(0, -5 * eyeScale, 6, 0);
@@ -484,10 +550,10 @@
                 ctx.stroke();
                 ctx.restore();
 
-                // Right eye
+                // Right Eye
                 ctx.save();
-                ctx.translate(owl.x + 18, owl.y);
-                ctx.rotate(-0.35); 
+                ctx.translate(7, 0);
+                ctx.rotate(-0.35);
                 ctx.beginPath();
                 ctx.moveTo(-6, 0);
                 ctx.quadraticCurveTo(0, -5 * eyeScale, 6, 0);
@@ -497,6 +563,8 @@
                 ctx.fill();
                 ctx.shadowBlur = 0;
                 ctx.stroke();
+                ctx.restore();
+
                 ctx.restore();
             });
         }
