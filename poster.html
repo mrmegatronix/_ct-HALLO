@@ -9,13 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700;800;900&family=Cinzel:wght@700;800;900&family=Creepster&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #080306;
             --pumpkin-orange: #ff7b00;
             --pumpkin-glow: #ffa500;
-            --blood-red: #aa181a;
             --gold-accent: #d99a2e;
-            --gold-light: #ffd88a;
-            --ink-black: #0c0502;
         }
 
         * {
@@ -26,8 +22,7 @@
 
         body {
             background-color: #050204;
-            background-image: 
-                radial-gradient(circle at 50% 10%, #200814 0%, #050205 100%);
+            background-image: radial-gradient(circle at 50% 10%, #200814 0%, #050205 100%);
             color: #ffffff;
             font-family: 'Montserrat', sans-serif;
             display: flex;
@@ -91,8 +86,8 @@
             aspect-ratio: 297 / 420;
             background: #090306;
             background-image: 
-                radial-gradient(ellipse at 50% 12%, rgba(255, 123, 0, 0.16) 0%, transparent 60%),
-                radial-gradient(ellipse at 50% 88%, rgba(170, 24, 26, 0.20) 0%, transparent 65%),
+                radial-gradient(ellipse at 50% 12%, rgba(255, 123, 0, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 88%, rgba(170, 24, 26, 0.18) 0%, transparent 65%),
                 linear-gradient(180deg, #0d0408 0%, #060205 50%, #0c0409 100%);
             border: 3px solid #ff7b00;
             border-radius: 8px;
@@ -114,7 +109,7 @@
             width: 100%;
             height: 100%;
             border: 2.5px solid #d99a2e;
-            padding: 12px 14px;
+            padding: 14px 18px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -156,32 +151,15 @@
             align-items: center;
             gap: 2px;
             width: 100%;
-            padding: 0 10px;
         }
 
         .logo-emblem {
-            width: 90px;
-            height: 90px;
+            width: 86px;
+            height: 86px;
             object-fit: contain;
             filter: drop-shadow(0 0 14px rgba(255, 140, 0, 0.6));
         }
 
-        .location-tag {
-            font-family: 'Cinzel', serif;
-            font-size: 11.5px;
-            font-weight: 800;
-            letter-spacing: 3.5px;
-            color: #d99a2e;
-            text-transform: uppercase;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-            margin-top: 1px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 95%;
-        }
-
-        /* Main Grand Event Title - Perfectly Constrained */
         .spooky-grand-title {
             font-family: 'Creepster', cursive;
             font-size: 38px;
@@ -193,7 +171,7 @@
                 0 0 35px rgba(255, 80, 0, 0.85),
                 2px 3px 0 #000000;
             -webkit-text-stroke: 1px #000;
-            margin: 2px 0 1px;
+            margin: 4px 0 0;
             text-transform: uppercase;
             white-space: nowrap;
             overflow: hidden;
@@ -201,14 +179,14 @@
             max-width: 96%;
         }
 
-        /* Event 1: Trivia Night Card */
+        /* Event 1: Trivia Night */
         .event-card {
             width: 100%;
             max-width: 96%;
             background: linear-gradient(135deg, rgba(35, 12, 22, 0.9) 0%, rgba(18, 5, 12, 0.95) 100%);
             border: 2px solid #ff7b00;
             border-radius: 6px;
-            padding: 8px 12px;
+            padding: 8px 14px;
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7), inset 0 0 14px rgba(255, 123, 0, 0.12);
             display: flex;
             flex-direction: column;
@@ -216,25 +194,11 @@
             gap: 2px;
         }
 
-        .event-badge {
-            font-family: 'Chakra Petch', sans-serif;
-            font-size: 11px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            color: #0c0502;
-            background: linear-gradient(90deg, #ffaa00 0%, #ff6a00 100%);
-            padding: 2px 12px;
-            border-radius: 4px;
-            text-transform: uppercase;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-            white-space: nowrap;
-        }
-
         .event-title {
             font-family: 'Creepster', cursive;
-            font-size: 30px;
+            font-size: 32px;
             line-height: 1.05;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
             color: #ffe6a3;
             text-shadow: 0 0 10px rgba(255, 123, 0, 0.75), 2px 2px 0 #000;
             text-transform: uppercase;
@@ -243,9 +207,9 @@
 
         .event-datetime {
             font-family: 'Chakra Petch', sans-serif;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 900;
-            letter-spacing: 1.8px;
+            letter-spacing: 2px;
             color: #ffffff;
             text-transform: uppercase;
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
@@ -255,28 +219,16 @@
             max-width: 98%;
         }
 
-        .event-desc {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1.2px;
-            color: #ffb86b;
-            text-transform: uppercase;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 98%;
-        }
-
-        /* Center Haunted Tavern Artwork Preview */
+        /* Centerpiece Haunted Tavern Visual - Expanded & Prominent */
         .tavern-visual-block {
             position: relative;
             width: 100%;
             max-width: 96%;
-            height: 125px;
-            border: 2px solid #5a2233;
+            height: 330px;
+            border: 2.5px solid #d99a2e;
             border-radius: 6px;
             overflow: hidden;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.85);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 123, 0, 0.3);
         }
 
         .tavern-visual-img {
@@ -287,39 +239,11 @@
             filter: contrast(1.15) brightness(1.1);
         }
 
-        .tavern-visual-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(14, 4, 9, 0.35) 0%, transparent 35%, transparent 65%, rgba(14, 4, 9, 0.65) 100%);
-            pointer-events: none;
-        }
-
-        .tavern-caption {
-            position: absolute;
-            bottom: 4px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-family: 'Cinzel', serif;
-            font-size: 11px;
-            font-weight: 900;
-            letter-spacing: 2.5px;
-            color: #ffd88a;
-            text-shadow: 0 2px 4px #000, 0 0 10px #ff7b00;
-            text-transform: uppercase;
-            white-space: nowrap;
-        }
-
-        /* Event 2: Karaoke Night Card */
+        /* Event 2: Karaoke Night */
         .event-card-karaoke {
             background: linear-gradient(135deg, rgba(22, 10, 35, 0.9) 0%, rgba(12, 4, 20, 0.95) 100%);
             border-color: #d93dff;
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7), inset 0 0 14px rgba(217, 61, 255, 0.18);
-        }
-
-        .event-badge-karaoke {
-            background: linear-gradient(90deg, #e64aff 0%, #9900ff 100%);
-            color: #ffffff;
         }
 
         .event-title-karaoke {
@@ -329,9 +253,9 @@
 
         .event-karaoke-hosts {
             font-family: 'Montserrat', sans-serif;
-            font-size: 13.5px;
+            font-size: 15px;
             font-weight: 800;
-            letter-spacing: 1.8px;
+            letter-spacing: 2px;
             color: #ffdb6b;
             text-transform: uppercase;
             white-space: nowrap;
@@ -344,22 +268,20 @@
             background: linear-gradient(90deg, #380d04 0%, #9e2305 50%, #380d04 100%);
             border: 2px solid #ffaa00;
             border-radius: 6px;
-            padding: 7px 12px;
+            padding: 8px 14px;
             box-shadow: 
                 0 0 20px rgba(255, 123, 0, 0.4),
                 inset 0 0 10px rgba(0, 0, 0, 0.6);
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 2px;
         }
 
         .prize-main-text {
             font-family: 'Creepster', cursive;
-            font-size: 24px;
+            font-size: 26px;
             line-height: 1.1;
-            letter-spacing: 1.8px;
+            letter-spacing: 2px;
             color: #ffffff;
             text-shadow: 
                 0 0 10px #ffe100,
@@ -372,25 +294,12 @@
             max-width: 98%;
         }
 
-        .prize-sub-text {
-            font-family: 'Chakra Petch', sans-serif;
-            font-size: 11.5px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            color: #ffe6a3;
-            text-transform: uppercase;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 98%;
-        }
-
-        /* Bottom Booking & Venue Information */
+        /* Bottom Booking Strip */
         .bottom-booking-strip {
             width: 100%;
             max-width: 96%;
             border-top: 1.5px solid rgba(217, 154, 46, 0.4);
-            padding-top: 6px;
+            padding-top: 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -399,7 +308,7 @@
 
         .cta-book-badge {
             font-family: 'Creepster', cursive;
-            font-size: 27px;
+            font-size: 28px;
             letter-spacing: 2.5px;
             color: #ffaa00;
             text-shadow: 0 0 10px rgba(255, 170, 0, 0.75), 2px 2px 0 #000;
@@ -410,25 +319,13 @@
         .website-link {
             font-family: 'Chakra Petch', sans-serif;
             font-weight: 900;
-            font-size: 17px;
+            font-size: 18px;
             letter-spacing: 2px;
             color: #ffffff;
             text-decoration: none;
             text-transform: uppercase;
             text-shadow: 0 0 8px rgba(255, 123, 0, 0.6);
             white-space: nowrap;
-        }
-
-        .venue-details-row {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: #d99a2e;
-            text-transform: uppercase;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 98%;
         }
 
         /* Print Settings for Pixel-Perfect A3 Output */
@@ -478,45 +375,36 @@
             <!-- Brand Header -->
             <div class="brand-header">
                 <img class="logo-emblem" src="coasters_logo.png" alt="Coasters Tavern Logo">
-                <div class="location-tag">COASTERS TAVERN • REDWOOD, CHRISTCHURCH</div>
                 <h1 class="spooky-grand-title">JOIN US FOR A SPOOKTACULAR HALLOWEEN!</h1>
             </div>
 
             <!-- Event 1: Trivia Night -->
             <div class="event-card">
-                <div class="event-badge">🎃 FEATURED EVENT 1 🎃</div>
                 <div class="event-title">HALLOWEEN TRIVIA NIGHT</div>
                 <div class="event-datetime">WEDNESDAY 28TH OCTOBER • FROM 7:00 PM</div>
-                <div class="event-desc">SPOOKY THEMED QUIZ • TEAM COMPETITION • FUN & GHOULISH TRIVIA</div>
             </div>
 
-            <!-- Haunted Tavern Centerpiece Visual -->
+            <!-- Centerpiece Haunted Tavern Artwork (Expanded Height) -->
             <div class="tavern-visual-block">
                 <img class="tavern-visual-img" src="coasters_halloween.jpg" alt="Coasters Tavern Halloween">
-                <div class="tavern-visual-overlay"></div>
-                <div class="tavern-caption">★ LIVE AT COASTERS TAVERN • FREE ADMISSION ★</div>
             </div>
 
             <!-- Event 2: Karaoke Night -->
             <div class="event-card event-card-karaoke">
-                <div class="event-badge event-badge-karaoke">🎤 FEATURED EVENT 2 🎤</div>
                 <div class="event-title event-title-karaoke">HALLOWEEN KARAOKE NIGHT</div>
-                <div class="event-karaoke-hosts">WITH ROSIE & KEVI K</div>
-                <div class="event-datetime">SATURDAY 31ST OCTOBER • FROM 8:00 PM TILL LATE</div>
-                <div class="event-desc">HAUNTED HITS • MONSTER CLASSICS • SING IF YOU DARE!</div>
+                <div class="event-karaoke-hosts">WITH ROSIE & KEVVY K</div>
+                <div class="event-datetime">SATURDAY 31ST OCTOBER • FROM 8:00 PM</div>
             </div>
 
             <!-- PRIZES FOR BEST DRESSED & BEST DRESSED TABLE -->
             <div class="prize-highlight-banner">
                 <div class="prize-main-text">🏆 PRIZES FOR BEST DRESSED & BEST DRESSED TABLE 🏆</div>
-                <div class="prize-sub-text">★ DRESS TO THRILL • DECORATE YOUR TABLE • WIN GREAT PRIZES ★</div>
             </div>
 
             <!-- Booking Strip -->
             <div class="bottom-booking-strip">
-                <div class="cta-book-badge">BOOK NOW IF YOU DARE!</div>
+                <div class="cta-book-badge">BOOK NOW</div>
                 <a class="website-link" href="https://coasterstavern.co.nz" target="_blank">WWW.COASTERSTAVERN.CO.NZ</a>
-                <div class="venue-details-row">156 MAIN NORTH ROAD, REDWOOD • PH: (03) 352 9066 • TABLE RESERVATIONS RECOMMENDED</div>
             </div>
         </div>
     </div>
