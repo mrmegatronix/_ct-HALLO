@@ -8,12 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700;800;900&family=Cinzel:wght@700;800;900&family=Creepster&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --pumpkin-orange: #ff7b00;
-            --pumpkin-glow: #ffa500;
-            --gold-accent: #d99a2e;
-        }
-
         * {
             box-sizing: border-box;
             margin: 0;
@@ -139,10 +133,10 @@
             text-shadow: 0 0 10px rgba(255, 123, 0, 0.8);
             user-select: none;
         }
-        .cd-tl { top: 6px; left: 8px; }
-        .cd-tr { top: 6px; right: 8px; }
-        .cd-bl { bottom: 6px; left: 8px; }
-        .cd-br { bottom: 6px; right: 8px; }
+        .cd-tl { top: 8px; left: 10px; }
+        .cd-tr { top: 8px; right: 10px; }
+        .cd-bl { bottom: 8px; left: 10px; }
+        .cd-br { bottom: 8px; right: 10px; }
 
         /* Top Brand Header */
         .brand-header {
@@ -154,17 +148,17 @@
         }
 
         .logo-emblem {
-            width: 86px;
-            height: 86px;
+            width: 80px;
+            height: 80px;
             object-fit: contain;
             filter: drop-shadow(0 0 14px rgba(255, 140, 0, 0.6));
         }
 
         .spooky-grand-title {
             font-family: 'Creepster', cursive;
-            font-size: 38px;
+            font-size: 26px;
             line-height: 1.05;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             color: #ffffff;
             text-shadow: 
                 0 0 16px #ff7b00,
@@ -176,7 +170,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 96%;
+            max-width: 100%;
         }
 
         /* Event 1: Trivia Night */
@@ -219,24 +213,26 @@
             max-width: 98%;
         }
 
-        /* Centerpiece Haunted Tavern Visual - Expanded & Prominent */
+        /* Centerpiece Haunted Tavern Artwork - Large Heroic Display */
         .tavern-visual-block {
             position: relative;
             width: 100%;
             max-width: 96%;
-            height: 330px;
+            height: 480px;
             border: 2.5px solid #d99a2e;
             border-radius: 6px;
             overflow: hidden;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 123, 0, 0.3);
+            flex-shrink: 0;
         }
 
         .tavern-visual-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: center 52%;
+            object-position: center center;
             filter: contrast(1.15) brightness(1.1);
+            display: block;
         }
 
         /* Event 2: Karaoke Night */
@@ -279,9 +275,9 @@
 
         .prize-main-text {
             font-family: 'Creepster', cursive;
-            font-size: 26px;
+            font-size: 18px;
             line-height: 1.1;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             color: #ffffff;
             text-shadow: 
                 0 0 10px #ffe100,
@@ -291,7 +287,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 98%;
+            max-width: 100%;
         }
 
         /* Bottom Booking Strip */
@@ -384,7 +380,7 @@
                 <div class="event-datetime">WEDNESDAY 28TH OCTOBER • FROM 7:00 PM</div>
             </div>
 
-            <!-- Centerpiece Haunted Tavern Artwork (Expanded Height) -->
+            <!-- Centerpiece Haunted Tavern Artwork (Expanded 480px Hero Display) -->
             <div class="tavern-visual-block">
                 <img class="tavern-visual-img" src="coasters_halloween.jpg" alt="Coasters Tavern Halloween">
             </div>
