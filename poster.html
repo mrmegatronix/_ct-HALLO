@@ -6,7 +6,7 @@
     <title>HALLOWEEN EVENT POSTER (A3) | Coasters Tavern Redwood</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700;800;900&family=Cinzel:wght@700;800;900&family=Creepster&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -18,20 +18,22 @@
             background-color: #050204;
             background-image: radial-gradient(circle at 50% 10%, #200814 0%, #050205 100%);
             color: #ffffff;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Chakra Petch', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            padding: 20px 16px 40px;
+            padding: 24px 16px 48px;
             -webkit-font-smoothing: antialiased;
         }
 
         /* Top Action Bar (Hidden when printing) */
         .controls-bar {
             display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 16px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             z-index: 100;
         }
 
@@ -44,7 +46,7 @@
             letter-spacing: 1.5px;
             text-transform: uppercase;
             text-decoration: none;
-            padding: 11px 24px;
+            padding: 12px 24px;
             border-radius: 6px;
             border: 2px solid #ffbe6b;
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.4);
@@ -72,275 +74,54 @@
             color: #ffffff;
         }
 
-        /* Exact A3 Dimensions & Proportions (1 : 1.414) */
-        .poster-wrapper {
+        /* High-Definition Poster Frame */
+        .poster-frame {
             position: relative;
             width: 100%;
-            max-width: 800px;
-            aspect-ratio: 297 / 420;
-            background: #090306;
-            background-image: 
-                radial-gradient(ellipse at 50% 12%, rgba(255, 123, 0, 0.15) 0%, transparent 60%),
-                radial-gradient(ellipse at 50% 88%, rgba(170, 24, 26, 0.18) 0%, transparent 65%),
-                linear-gradient(180deg, #0d0408 0%, #060205 50%, #0c0409 100%);
+            max-width: 820px;
+            background: #000000;
             border: 3px solid #ff7b00;
             border-radius: 8px;
-            padding: 16px 18px;
-            box-shadow:
-                0 25px 75px rgba(0, 0, 0, 0.98),
-                0 0 80px rgba(255, 123, 0, 0.25),
-                inset 0 0 50px rgba(0, 0, 0, 0.85);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
             overflow: hidden;
-            box-sizing: border-box;
-        }
-
-        /* Double Gothic Frame */
-        .outer-border-box {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            border: 2.5px solid #d99a2e;
-            padding: 14px 18px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            text-align: center;
-            z-index: 5;
-            background: rgba(0, 0, 0, 0.3);
-            box-sizing: border-box;
-            border-radius: 4px;
-        }
-
-        .inner-frame-line {
-            position: absolute;
-            inset: 4px;
-            border: 1px dashed rgba(217, 154, 46, 0.45);
-            border-radius: 2px;
-            pointer-events: none;
-        }
-
-        /* Corner Decorative Elements */
-        .corner-deco {
-            position: absolute;
-            font-size: 20px;
-            color: #ffaa00;
-            line-height: 1;
-            z-index: 8;
-            text-shadow: 0 0 10px rgba(255, 123, 0, 0.8);
-            user-select: none;
-        }
-        .cd-tl { top: 8px; left: 10px; }
-        .cd-tr { top: 8px; right: 10px; }
-        .cd-bl { bottom: 8px; left: 10px; }
-        .cd-br { bottom: 8px; right: 10px; }
-
-        /* Top Brand Header */
-        .brand-header {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            width: 100%;
-        }
-
-        .logo-emblem {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            filter: drop-shadow(0 0 14px rgba(255, 140, 0, 0.6));
-        }
-
-        .spooky-grand-title {
-            font-family: 'Creepster', cursive;
-            font-size: 26px;
-            line-height: 1.05;
-            letter-spacing: 1.5px;
-            color: #ffffff;
-            text-shadow: 
-                0 0 16px #ff7b00,
-                0 0 35px rgba(255, 80, 0, 0.85),
-                2px 3px 0 #000000;
-            -webkit-text-stroke: 1px #000;
-            margin: 4px 0 0;
-            text-transform: uppercase;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
-        }
-
-        /* Event 1: Trivia Night */
-        .event-card {
-            width: 100%;
-            max-width: 96%;
-            background: linear-gradient(135deg, rgba(35, 12, 22, 0.9) 0%, rgba(18, 5, 12, 0.95) 100%);
-            border: 2px solid #ff7b00;
-            border-radius: 6px;
-            padding: 8px 14px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7), inset 0 0 14px rgba(255, 123, 0, 0.12);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-        }
-
-        .event-title {
-            font-family: 'Creepster', cursive;
-            font-size: 32px;
-            line-height: 1.05;
-            letter-spacing: 2px;
-            color: #ffe6a3;
-            text-shadow: 0 0 10px rgba(255, 123, 0, 0.75), 2px 2px 0 #000;
-            text-transform: uppercase;
-            white-space: nowrap;
-        }
-
-        .event-datetime {
-            font-family: 'Chakra Petch', sans-serif;
-            font-size: 18px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            color: #ffffff;
-            text-transform: uppercase;
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 98%;
-        }
-
-        /* Centerpiece Haunted Tavern Artwork - Large Heroic Display */
-        .tavern-visual-block {
-            position: relative;
-            width: 100%;
-            max-width: 96%;
-            height: 480px;
-            border: 2.5px solid #d99a2e;
-            border-radius: 6px;
-            overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9), 0 0 20px rgba(255, 123, 0, 0.3);
-            flex-shrink: 0;
-        }
-
-        .tavern-visual-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center center;
-            filter: contrast(1.15) brightness(1.1);
-            display: block;
-        }
-
-        /* Event 2: Karaoke Night */
-        .event-card-karaoke {
-            background: linear-gradient(135deg, rgba(22, 10, 35, 0.9) 0%, rgba(12, 4, 20, 0.95) 100%);
-            border-color: #d93dff;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7), inset 0 0 14px rgba(217, 61, 255, 0.18);
-        }
-
-        .event-title-karaoke {
-            color: #ffb8ff;
-            text-shadow: 0 0 12px rgba(230, 74, 255, 0.75), 2px 2px 0 #000;
-        }
-
-        .event-karaoke-hosts {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 15px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            color: #ffdb6b;
-            text-transform: uppercase;
-            white-space: nowrap;
-        }
-
-        /* PRIZES FOR BEST DRESSED & BEST DRESSED TABLE */
-        .prize-highlight-banner {
-            width: 100%;
-            max-width: 96%;
-            background: linear-gradient(90deg, #380d04 0%, #9e2305 50%, #380d04 100%);
-            border: 2px solid #ffaa00;
-            border-radius: 6px;
-            padding: 8px 14px;
             box-shadow: 
-                0 0 20px rgba(255, 123, 0, 0.4),
-                inset 0 0 10px rgba(0, 0, 0, 0.6);
+                0 25px 75px rgba(0, 0, 0, 0.98),
+                0 0 60px rgba(255, 123, 0, 0.35);
             display: flex;
-            align-items: center;
             justify-content: center;
-        }
-
-        .prize-main-text {
-            font-family: 'Creepster', cursive;
-            font-size: 18px;
-            line-height: 1.1;
-            letter-spacing: 1px;
-            color: #ffffff;
-            text-shadow: 
-                0 0 10px #ffe100,
-                0 0 18px #ff6600,
-                2px 2px 0 #000;
-            text-transform: uppercase;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
-        }
-
-        /* Bottom Booking Strip */
-        .bottom-booking-strip {
-            width: 100%;
-            max-width: 96%;
-            border-top: 1.5px solid rgba(217, 154, 46, 0.4);
-            padding-top: 8px;
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 2px;
         }
 
-        .cta-book-badge {
-            font-family: 'Creepster', cursive;
-            font-size: 28px;
-            letter-spacing: 2.5px;
-            color: #ffaa00;
-            text-shadow: 0 0 10px rgba(255, 170, 0, 0.75), 2px 2px 0 #000;
-            line-height: 1;
-            white-space: nowrap;
+        .poster-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
         }
 
-        .website-link {
-            font-family: 'Chakra Petch', sans-serif;
-            font-weight: 900;
-            font-size: 18px;
-            letter-spacing: 2px;
-            color: #ffffff;
-            text-decoration: none;
-            text-transform: uppercase;
-            text-shadow: 0 0 8px rgba(255, 123, 0, 0.6);
-            white-space: nowrap;
-        }
-
-        /* Print Settings for Pixel-Perfect A3 Output */
+        /* Pixel-Perfect A3 Print Specification */
         @media print {
             body {
                 background: none !important;
                 padding: 0 !important;
+                margin: 0 !important;
             }
             .controls-bar {
                 display: none !important;
             }
-            .poster-wrapper {
+            .poster-frame {
                 max-width: 100% !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                border: none !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .poster-img {
                 width: 100% !important;
                 height: 100% !important;
-                border: none !important;
-                box-shadow: none !important;
-                border-radius: 0 !important;
-                padding: 10mm 12mm !important;
+                object-fit: contain !important;
             }
             @page {
                 size: A3 portrait;
@@ -354,55 +135,13 @@
     <!-- On-Screen Controls Bar -->
     <div class="controls-bar">
         <button class="btn" onclick="window.print()">🖨️ PRINT / SAVE POSTER (A3)</button>
+        <a class="btn btn-outline" href="halloween_a3_poster.jpg" download="Coasters_Tavern_Halloween_Poster_A3.jpg">📥 DOWNLOAD POSTER</a>
         <a class="btn btn-outline" href="index.html">← RETURN TO LIVE DISPLAY</a>
     </div>
 
     <!-- Authentic Halloween A3 Event Poster -->
-    <div class="poster-wrapper">
-        <div class="outer-border-box">
-            <div class="inner-frame-line"></div>
-
-            <!-- 4 Corner Decos -->
-            <div class="corner-deco cd-tl">🕸️</div>
-            <div class="corner-deco cd-tr">🕸️</div>
-            <div class="corner-deco cd-bl">🎃</div>
-            <div class="corner-deco cd-br">🎃</div>
-
-            <!-- Brand Header -->
-            <div class="brand-header">
-                <img class="logo-emblem" src="coasters_logo.png" alt="Coasters Tavern Logo">
-                <h1 class="spooky-grand-title">JOIN US FOR A SPOOKTACULAR HALLOWEEN!</h1>
-            </div>
-
-            <!-- Event 1: Trivia Night -->
-            <div class="event-card">
-                <div class="event-title">HALLOWEEN TRIVIA NIGHT</div>
-                <div class="event-datetime">WEDNESDAY 28TH OCTOBER • FROM 7:00 PM</div>
-            </div>
-
-            <!-- Centerpiece Haunted Tavern Artwork (Expanded 480px Hero Display) -->
-            <div class="tavern-visual-block">
-                <img class="tavern-visual-img" src="coasters_halloween.jpg" alt="Coasters Tavern Halloween">
-            </div>
-
-            <!-- Event 2: Karaoke Night -->
-            <div class="event-card event-card-karaoke">
-                <div class="event-title event-title-karaoke">HALLOWEEN KARAOKE NIGHT</div>
-                <div class="event-karaoke-hosts">WITH ROSIE & KEVVY K</div>
-                <div class="event-datetime">SATURDAY 31ST OCTOBER • FROM 8:00 PM</div>
-            </div>
-
-            <!-- PRIZES FOR BEST DRESSED & BEST DRESSED TABLE -->
-            <div class="prize-highlight-banner">
-                <div class="prize-main-text">🏆 PRIZES FOR BEST DRESSED & BEST DRESSED TABLE 🏆</div>
-            </div>
-
-            <!-- Booking Strip -->
-            <div class="bottom-booking-strip">
-                <div class="cta-book-badge">BOOK NOW</div>
-                <a class="website-link" href="https://coasterstavern.co.nz" target="_blank">WWW.COASTERSTAVERN.CO.NZ</a>
-            </div>
-        </div>
+    <div class="poster-frame">
+        <img class="poster-img" src="halloween_a3_poster.jpg" alt="Coasters Tavern Halloween Events Poster A3">
     </div>
 
 </body>
