@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MULTI-PAGE GIANT HALLOWEEN POSTER | Coasters Tavern Redwood</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700;800;900&family=Creepster&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pumpkin-orange: #ff7b00;
+            --pumpkin-glow: #ffa500;
+            --gold-accent: #d99a2e;
+            --dark-bg: #050204;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #080306;
+            background-image: radial-gradient(circle at 50% 10%, #200814 0%, #050205 100%);
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 16px 60px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Top Action Header */
+        .controls-header {
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(20, 6, 14, 0.95);
+            border: 2px solid var(--pumpkin-orange);
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 25px rgba(255, 123, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            z-index: 100;
+        }
+
+        .header-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 123, 0, 0.3);
+            padding-bottom: 12px;
+        }
+
+        .huge-poster-title {
+            font-family: 'Creepster', cursive;
+            font-size: 30px;
+            color: #ffaa00;
+            letter-spacing: 2px;
+            text-shadow: 0 0 12px rgba(255, 123, 0, 0.8), 2px 2px 0 #000;
+        }
+
+        .huge-poster-sub {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 13px;
+            color: #ffe6a3;
+            letter-spacing: 1px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .btn-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(180deg, #ff8c1a 0%, #b85000 100%);
+            color: #0f0501;
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 800;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: 2px solid #ffbe6b;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.75);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.15s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 123, 0, 0.6);
+            background: linear-gradient(180deg, #ffa33a 0%, #cc5c00 100%);
+        }
+
+        .btn-print {
+            background: linear-gradient(180deg, #ff5500 0%, #cc2b00 100%);
+            color: #ffffff;
+            border-color: #ffa366;
+            font-weight: 900;
+        }
+
+        .btn-print:hover {
+            background: linear-gradient(180deg, #ff7722 0%, #dd3300 100%);
+            box-shadow: 0 8px 24px rgba(255, 85, 0, 0.7);
+        }
+
+        .btn-outline {
+            background: rgba(30, 10, 20, 0.85);
+            color: #ffbe6b;
+            border: 2px solid #8f3e09;
+        }
+
+        .btn-outline:hover {
+            background: rgba(50, 16, 32, 0.95);
+            color: #ffffff;
+        }
+
+        /* Grid Controls Toolbar */
+        .grid-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 123, 0, 0.2);
+        }
+
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 13px;
+            color: #ffe6a3;
+            font-weight: 700;
+        }
+
+        .toggle-btn {
+            background: rgba(40, 12, 25, 0.9);
+            color: #ffbe6b;
+            border: 1px solid #8f3e09;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 800;
+            font-size: 12px;
+            transition: all 0.15s ease;
+        }
+
+        .toggle-btn.active {
+            background: #ff7b00;
+            color: #0f0501;
+            border-color: #ffe6a3;
+            box-shadow: 0 0 10px rgba(255, 123, 0, 0.6);
+        }
+
+        /* Assembly Guide Card */
+        .assembly-guide-card {
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(25, 8, 18, 0.85);
+            border: 2px dashed rgba(255, 123, 0, 0.45);
+            border-radius: 8px;
+            padding: 14px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .guide-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 13px;
+        }
+
+        .guide-steps span {
+            color: #ffffff;
+        }
+
+        .guide-steps strong {
+            color: #ffaa00;
+        }
+
+        .mini-grid-preview {
+            display: grid;
+            gap: 4px;
+            padding: 6px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 123, 0, 0.3);
+            border-radius: 6px;
+        }
+
+        .mini-cell {
+            background: rgba(255, 123, 0, 0.25);
+            border: 1px solid #ff7b00;
+            color: #ffe6a3;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 10px;
+            font-weight: 800;
+            width: 32px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Tiled Pages Container */
+        #tilesContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 28px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        /* Individual Printable Tile Page */
+        .tile-page {
+            position: relative;
+            width: 100%;
+            max-width: 780px;
+            aspect-ratio: 210 / 297; /* Standard A4 Portrait */
+            background: #000;
+            border: 3px solid #ff7b00;
+            border-radius: 4px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.95);
+            overflow: hidden;
+            box-sizing: border-box;
+            page-break-after: always;
+            break-after: page;
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        /* The Viewport that clips the master poster slice */
+        .tile-viewport {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Master Poster Stage inside viewport */
+        .tile-poster-stage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            box-sizing: border-box;
+        }
+
+        .tile-poster-img {
+            width: 100%;
+            height: 100%;
+            object-fit: fill;
+            display: block;
+        }
+
+        /* Corner Cut Marks / Crosshairs */
+        .corner-crop-mark {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-color: #ffaa00;
+            border-style: solid;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.85;
+        }
+        .crop-tl { top: 6px; left: 6px; border-width: 2px 0 0 2px; }
+        .crop-tr { top: 6px; right: 6px; border-width: 2px 2px 0 0; }
+        .crop-bl { bottom: 6px; left: 6px; border-width: 0 0 2px 2px; }
+        .crop-br { bottom: 6px; right: 6px; border-width: 0 2px 2px 0; }
+
+        /* Tile Info Badge */
+        .tile-badge {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            background: rgba(10, 4, 8, 0.92);
+            color: #ffaa00;
+            border: 1px solid #ff7b00;
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            padding: 3px 10px;
+            border-radius: 4px;
+            z-index: 60;
+            text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.8);
+            pointer-events: none;
+        }
+
+        /* Glue / Overlap Margin Strips */
+        .overlap-strip-right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 24px;
+            height: 100%;
+            border-left: 2px dashed rgba(255, 123, 0, 0.7);
+            background: rgba(255, 123, 0, 0.15);
+            z-index: 55;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .overlap-strip-right span {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 9px;
+            font-weight: 800;
+            color: #ffe6a3;
+            letter-spacing: 2px;
+        }
+
+        .overlap-strip-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 24px;
+            border-top: 2px dashed rgba(255, 123, 0, 0.7);
+            background: rgba(255, 123, 0, 0.15);
+            z-index: 55;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .overlap-strip-bottom span {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 9px;
+            font-weight: 800;
+            color: #ffe6a3;
+            letter-spacing: 2px;
+        }
+
+        /* Print Styles: Seamless Multi-Page Print */
+        @media print {
+            *, *::before, *::after {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            html, body {
+                background: #000 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+            }
+
+            .controls-header,
+            .assembly-guide-card {
+                display: none !important;
+            }
+
+            #tilesContainer {
+                display: block !important;
+                width: 100% !important;
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                gap: 0 !important;
+            }
+
+            .tile-page {
+                width: 100vw !important;
+                height: 100vh !important;
+                max-width: none !important;
+                max-height: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                page-break-after: always !important;
+                break-after: page !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Controls Header -->
+    <header class="controls-header">
+        <div class="header-title-row">
+            <div>
+                <h1 class="huge-poster-title">🧩 MULTI-PAGE GIANT HALLOWEEN POSTER</h1>
+                <p class="huge-poster-sub">PRINT SEAMLESS TILES ON A4 / A3 & STITCH TOGETHER FOR A MASSIVE WALL POSTER</p>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-print" id="printAllBtn" onclick="window.print()">🖨️ PRINT ALL TILES</button>
+                <a class="btn btn-outline" href="poster.html">← SINGLE A3 POSTER</a>
+                <a class="btn btn-outline" href="index.html">LIVE DISPLAY</a>
+            </div>
+        </div>
+
+        <div class="grid-toolbar">
+            <div class="toggle-group">
+                <span>LAYOUT GRID:</span>
+                <button class="toggle-btn active" id="btnGrid2x2" onclick="setGridLayout(2, 2)">2×2 (4 PAGES)</button>
+                <button class="toggle-btn" id="btnGrid3x3" onclick="setGridLayout(3, 3)">3×3 (9 PAGES)</button>
+                <button class="toggle-btn" id="btnGrid3x4" onclick="setGridLayout(3, 4)">3×4 (12 PAGES)</button>
+                <button class="toggle-btn" id="btnGrid4x4" onclick="setGridLayout(4, 4)">4×4 (16 PAGES)</button>
+            </div>
+
+            <div class="toggle-group">
+                <span>STITCHING GUIDES:</span>
+                <button class="toggle-btn active" id="btnOverlapToggle" onclick="toggleOverlapGuide()">GLUE TABS: ON</button>
+                <button class="toggle-btn active" id="btnCropMarksToggle" onclick="toggleCropMarks()">CROP MARKS: ON</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Assembly Guide Card -->
+    <section class="assembly-guide-card">
+        <div class="guide-steps">
+            <span><strong>STEP 1:</strong> Click <strong>🖨️ PRINT ALL TILES</strong> (Select 100% Scale / Margins: None in Print Dialog).</span>
+            <span><strong>STEP 2:</strong> Lay out the printed sheets matching the numbered grid layout below.</span>
+            <span><strong>STEP 3:</strong> Trim along the corner crop marks, or use the 10mm glue tabs to overlap & tape the sheets together from the rear.</span>
+        </div>
+        <div class="mini-grid-preview" id="miniGridPreview">
+            <!-- Dynamic mini cells rendered by JS -->
+        </div>
+    </section>
+
+    <!-- Dynamic Tiled Pages Container -->
+    <main id="tilesContainer">
+        <!-- Generated by JavaScript -->
+    </main>
+
+    <script>
+        let currentCols = 2;
+        let currentRows = 2;
+        let showOverlap = true;
+        let showCropMarks = true;
+
+        const posterSrc = 'halloween_a3_poster.jpg?v=20261022-2';
+
+        function renderTiles() {
+            const container = document.getElementById('tilesContainer');
+            const miniGrid = document.getElementById('miniGridPreview');
+            const printBtn = document.getElementById('printAllBtn');
+            container.innerHTML = '';
+            miniGrid.innerHTML = '';
+
+            miniGrid.style.gridTemplateColumns = `repeat(${currentCols}, 1fr)`;
+
+            const totalPages = currentCols * currentRows;
+            printBtn.textContent = `🖨️ PRINT ALL ${totalPages} TILES`;
+
+            let pageNumber = 1;
+
+            for (let r = 0; r < currentRows; r++) {
+                for (let c = 0; c < currentCols; c++) {
+                    const pageNum = pageNumber++;
+
+                    // Mini preview cell
+                    const miniCell = document.createElement('div');
+                    miniCell.className = 'mini-cell';
+                    miniCell.textContent = pageNum;
+                    miniGrid.appendChild(miniCell);
+
+                    // Tile Page Element
+                    const pageDiv = document.createElement('div');
+                    pageDiv.className = 'tile-page';
+                    pageDiv.id = `tilePage_${pageNum}`;
+
+                    // Tile Badge
+                    const badge = document.createElement('div');
+                    badge.className = 'tile-badge';
+                    badge.textContent = `PAGE ${pageNum}/${totalPages} [R${r + 1}:C${c + 1}]`;
+                    pageDiv.appendChild(badge);
+
+                    // Corner Crop Marks
+                    if (showCropMarks) {
+                        const cropTL = document.createElement('div'); cropTL.className = 'corner-crop-mark crop-tl'; pageDiv.appendChild(cropTL);
+                        const cropTR = document.createElement('div'); cropTR.className = 'corner-crop-mark crop-tr'; pageDiv.appendChild(cropTR);
+                        const cropBL = document.createElement('div'); cropBL.className = 'corner-crop-mark crop-bl'; pageDiv.appendChild(cropBL);
+                        const cropBR = document.createElement('div'); cropBR.className = 'corner-crop-mark crop-br'; pageDiv.appendChild(cropBR);
+                    }
+
+                    // Overlap Tabs (Right edge for cols < currentCols - 1; Bottom edge for rows < currentRows - 1)
+                    if (showOverlap) {
+                        if (c < currentCols - 1) {
+                            const rightTab = document.createElement('div');
+                            rightTab.className = 'overlap-strip-right';
+                            rightTab.innerHTML = '<span>GLUE / TAPE OVERLAP</span>';
+                            pageDiv.appendChild(rightTab);
+                        }
+                        if (r < currentRows - 1) {
+                            const bottomTab = document.createElement('div');
+                            bottomTab.className = 'overlap-strip-bottom';
+                            bottomTab.innerHTML = '<span>GLUE / TAPE OVERLAP</span>';
+                            pageDiv.appendChild(bottomTab);
+                        }
+                    }
+
+                    // Tile Viewport
+                    const viewport = document.createElement('div');
+                    viewport.className = 'tile-viewport';
+
+                    // Cloned Master Stage
+                    const stage = document.createElement('div');
+                    stage.className = 'tile-poster-stage';
+                    stage.style.width = `${currentCols * 100}%`;
+                    stage.style.height = `${currentRows * 100}%`;
+                    stage.style.left = `-${c * 100}%`;
+                    stage.style.top = `-${r * 100}%`;
+
+                    const img = document.createElement('img');
+                    img.className = 'tile-poster-img';
+                    img.src = posterSrc;
+                    img.alt = `Poster Slice R${r + 1} C${c + 1}`;
+
+                    stage.appendChild(img);
+                    viewport.appendChild(stage);
+                    pageDiv.appendChild(viewport);
+                    container.appendChild(pageDiv);
+                }
+            }
+        }
+
+        function setGridLayout(cols, rows) {
+            currentCols = cols;
+            currentRows = rows;
+            document.getElementById('btnGrid2x2').classList.toggle('active', cols === 2 && rows === 2);
+            document.getElementById('btnGrid3x3').classList.toggle('active', cols === 3 && rows === 3);
+            document.getElementById('btnGrid3x4').classList.toggle('active', cols === 3 && rows === 4);
+            document.getElementById('btnGrid4x4').classList.toggle('active', cols === 4 && rows === 4);
+            renderTiles();
+        }
+
+        function toggleOverlapGuide() {
+            showOverlap = !showOverlap;
+            const btn = document.getElementById('btnOverlapToggle');
+            btn.classList.toggle('active', showOverlap);
+            btn.textContent = showOverlap ? 'GLUE TABS: ON' : 'GLUE TABS: OFF';
+            renderTiles();
+        }
+
+        function toggleCropMarks() {
+            showCropMarks = !showCropMarks;
+            const btn = document.getElementById('btnCropMarksToggle');
+            btn.classList.toggle('active', showCropMarks);
+            btn.textContent = showCropMarks ? 'CROP MARKS: ON' : 'CROP MARKS: OFF';
+            renderTiles();
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderTiles();
+        });
+    </script>
+</body>
+</html>

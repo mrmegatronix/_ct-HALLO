@@ -77,6 +77,18 @@
             color: #ffffff;
         }
 
+        .btn-big {
+            background: linear-gradient(180deg, #9900cc 0%, #660088 100%);
+            color: #ffffff;
+            border: 2px solid #df80ff;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.75), 0 0 16px rgba(153, 0, 204, 0.4);
+        }
+
+        .btn-big:hover {
+            background: linear-gradient(180deg, #b300ee 0%, #770099 100%);
+            box-shadow: 0 8px 24px rgba(204, 0, 255, 0.6);
+        }
+
         /* High-Definition Poster Frame */
         .poster-frame {
             position: relative;
@@ -137,6 +149,7 @@
 
     <!-- On-Screen Controls Bar -->
     <div class="controls-bar">
+        <a class="btn btn-big" href="poster-big.html">🧩 MULTI-PAGE HUGE POSTER</a>
         <button class="btn" onclick="window.print()">🖨️ PRINT / SAVE POSTER (A3)</button>
         <a class="btn btn-outline" href="halloween_a3_poster.jpg?v=20261022-2" download="Coasters_Tavern_Halloween_Poster_A3.jpg">📥 DOWNLOAD POSTER</a>
         <a class="btn btn-outline" href="index.html">← RETURN TO LIVE DISPLAY</a>
