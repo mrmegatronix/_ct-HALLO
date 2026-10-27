@@ -392,6 +392,14 @@
                 display: none !important;
             }
 
+            /* Never print crop marks, tile badges, or glue tabs over artwork unless explicitly enabled */
+            body:not(.print-with-guides) .corner-crop-mark,
+            body:not(.print-with-guides) .tile-badge,
+            body:not(.print-with-guides) .overlap-strip-right,
+            body:not(.print-with-guides) .overlap-strip-bottom {
+                display: none !important;
+            }
+
             #tilesContainer {
                 display: block !important;
                 width: 100% !important;
@@ -434,7 +442,7 @@
                 <p class="huge-poster-sub">PRINT SEAMLESS TILES ON A4 / A3 & STITCH TOGETHER FOR A MASSIVE WALL POSTER</p>
             </div>
             <div class="btn-group">
-                <button class="btn btn-print" id="printAllBtn" onclick="window.print()">🖨️ PRINT ALL TILES</button>
+                <button class="btn btn-print" id="printAllBtn" onclick="printCleanTiles()">🖨️ PRINT ALL TILES (CLEAN ARTWORK)</button>
                 <a class="btn btn-outline" href="poster.html">← SINGLE A3 POSTER</a>
                 <a class="btn btn-outline" href="index.html">LIVE DISPLAY</a>
             </div>
@@ -450,9 +458,10 @@
             </div>
 
             <div class="toggle-group">
-                <span>STITCHING GUIDES:</span>
-                <button class="toggle-btn active" id="btnOverlapToggle" onclick="toggleOverlapGuide()">GLUE TABS: ON</button>
-                <button class="toggle-btn active" id="btnCropMarksToggle" onclick="toggleCropMarks()">CROP MARKS: ON</button>
+                <span>PRINT GUIDES:</span>
+                <button class="toggle-btn" id="btnPrintGuidesToggle" onclick="togglePrintGuides()">PRINT GUIDES: OFF (CLEAN)</button>
+                <button class="toggle-btn" id="btnCropMarksToggle" onclick="toggleCropMarks()">ON-SCREEN MARKS: OFF</button>
+                <button class="toggle-btn" id="btnOverlapToggle" onclick="toggleOverlapGuide()">ON-SCREEN TABS: OFF</button>
             </div>
         </div>
     </header>
@@ -477,10 +486,24 @@
     <script>
         let currentCols = 2;
         let currentRows = 2;
-        let showOverlap = true;
-        let showCropMarks = true;
+        let showOverlap = false;
+        let showCropMarks = false;
+        let printWithGuides = false;
 
         const posterSrc = 'halloween_a3_poster.jpg?v=20261022-2';
+
+        function printCleanTiles() {
+            document.body.classList.remove('print-with-guides');
+            window.print();
+        }
+
+        function togglePrintGuides() {
+            printWithGuides = !printWithGuides;
+            document.body.classList.toggle('print-with-guides', printWithGuides);
+            const btn = document.getElementById('btnPrintGuidesToggle');
+            btn.classList.toggle('active', printWithGuides);
+            btn.textContent = printWithGuides ? 'PRINT GUIDES: ON' : 'PRINT GUIDES: OFF (CLEAN)';
+        }
 
         function renderTiles() {
             const container = document.getElementById('tilesContainer');
@@ -492,7 +515,7 @@
             miniGrid.style.gridTemplateColumns = `repeat(${currentCols}, 1fr)`;
 
             const totalPages = currentCols * currentRows;
-            printBtn.textContent = `🖨️ PRINT ALL ${totalPages} TILES`;
+            printBtn.textContent = `🖨️ PRINT ALL ${totalPages} TILES (CLEAN ARTWORK)`;
 
             let pageNumber = 1;
 
@@ -580,7 +603,7 @@
             showOverlap = !showOverlap;
             const btn = document.getElementById('btnOverlapToggle');
             btn.classList.toggle('active', showOverlap);
-            btn.textContent = showOverlap ? 'GLUE TABS: ON' : 'GLUE TABS: OFF';
+            btn.textContent = showOverlap ? 'ON-SCREEN TABS: ON' : 'ON-SCREEN TABS: OFF';
             renderTiles();
         }
 
@@ -588,7 +611,7 @@
             showCropMarks = !showCropMarks;
             const btn = document.getElementById('btnCropMarksToggle');
             btn.classList.toggle('active', showCropMarks);
-            btn.textContent = showCropMarks ? 'CROP MARKS: ON' : 'CROP MARKS: OFF';
+            btn.textContent = showCropMarks ? 'ON-SCREEN MARKS: ON' : 'ON-SCREEN MARKS: OFF';
             renderTiles();
         }
 
