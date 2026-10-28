@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HALLOWEEN KARAOKE POSTER (A3) | Coasters Tavern Redwood</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #050204;
+            background-image: radial-gradient(circle at 50% 10%, #200814 0%, #050205 100%);
+            color: #ffffff;
+            font-family: 'Chakra Petch', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 24px 16px 48px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Top Action Bar (Hidden when printing) */
+        .controls-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            z-index: 100;
+        }
+
+        .btn {
+            background: linear-gradient(180deg, #ff8c1a 0%, #b85000 100%);
+            color: #0f0501;
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 800;
+            font-size: 14px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            border: 2px solid #ffbe6b;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.15s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 123, 0, 0.6);
+            background: linear-gradient(180deg, #ffa33a 0%, #cc5c00 100%);
+        }
+
+        .btn-outline {
+            background: rgba(25, 10, 18, 0.85);
+            color: #ffbe6b;
+            border: 2px solid #8f3e09;
+        }
+
+        .btn-outline:hover {
+            background: rgba(45, 16, 30, 0.95);
+            color: #ffffff;
+        }
+
+        .btn-big {
+            background: linear-gradient(180deg, #9900cc 0%, #660088 100%);
+            color: #ffffff;
+            border: 2px solid #df80ff;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.75), 0 0 16px rgba(153, 0, 204, 0.4);
+        }
+
+        .btn-big:hover {
+            background: linear-gradient(180deg, #b300ee 0%, #770099 100%);
+            box-shadow: 0 8px 24px rgba(204, 0, 255, 0.6);
+        }
+
+        /* High-Definition Poster Frame */
+        .poster-frame {
+            position: relative;
+            width: 100%;
+            max-width: 820px;
+            background: #000000;
+            border: 3px solid #ff7b00;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 
+                0 25px 75px rgba(0, 0, 0, 0.98),
+                0 0 60px rgba(255, 123, 0, 0.35);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .poster-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        /* Pixel-Perfect A3 Print Specification */
+        @media print {
+            body {
+                background: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .controls-bar {
+                display: none !important;
+            }
+            .poster-frame {
+                max-width: 100% !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                border: none !important;
+                border-radius: 0 !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .poster-img {
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: contain !important;
+            }
+            @page {
+                size: A3 portrait;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- On-Screen Controls Bar -->
+    <div class="controls-bar">
+        <a class="btn btn-big" href="poster-big.html?poster=karaoke">🧩 MULTI-PAGE HUGE POSTER</a>
+        <button class="btn" onclick="window.print()">🖨️ PRINT / SAVE POSTER (A3)</button>
+        <a class="btn btn-outline" href="poster.html">🎃 ALL EVENTS POSTER</a>
+        <a class="btn btn-outline" href="halloween_karaoke_poster.jpg?v=20261028" download="Coasters_Tavern_Halloween_Karaoke_Poster_A3.jpg">📥 DOWNLOAD POSTER</a>
+        <a class="btn btn-outline" href="karaoke.html">← RETURN TO LIVE DISPLAY</a>
+    </div>
+
+    <!-- Authentic Halloween Karaoke A3 Event Poster -->
+    <div class="poster-frame">
+        <img class="poster-img" src="halloween_karaoke_poster.jpg?v=20261028" alt="Coasters Tavern Halloween Karaoke Poster A3">
+    </div>
+
+</body>
+</html>

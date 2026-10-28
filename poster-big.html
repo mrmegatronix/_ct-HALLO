@@ -318,6 +318,16 @@
                 print-color-adjust: exact !important;
             }
 
+            @page {
+                size: A4 portrait;
+                margin: 0 !important;
+            }
+
+            body.paper-a3 @page {
+                size: A3 portrait;
+                margin: 0 !important;
+            }
+
             html, body {
                 background: #000 !important;
                 margin: 0 !important;
@@ -331,9 +341,10 @@
                 display: none !important;
             }
 
-            /* Suppress overlays on print unless enabled */
-            body:not(.print-with-guides) .corner-crop-mark,
-            body:not(.print-with-guides) .tile-badge {
+            /* Never print guides, crop marks or badges over artwork */
+            .corner-crop-mark,
+            .tile-badge,
+            .overlap-overlay {
                 display: none !important;
             }
 
@@ -347,10 +358,10 @@
             }
 
             .tile-page {
-                width: 210mm !important;
-                height: 297mm !important;
-                max-width: 210mm !important;
-                max-height: 297mm !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                max-width: none !important;
+                max-height: none !important;
                 margin: 0 !important;
                 padding: 0 !important;
                 border: none !important;
@@ -363,26 +374,17 @@
             }
 
             body.paper-a3 .tile-page {
-                width: 297mm !important;
-                height: 420mm !important;
-                max-width: 297mm !important;
-                max-height: 420mm !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                max-width: none !important;
+                max-height: none !important;
             }
 
             .tile-canvas {
                 width: 100% !important;
                 height: 100% !important;
                 display: block !important;
-            }
-
-            @page {
-                size: A4 portrait;
-                margin: 0;
-            }
-
-            body.paper-a3 @page {
-                size: A3 portrait;
-                margin: 0;
+                object-fit: fill !important;
             }
         }
     </style>
@@ -398,12 +400,18 @@
             </div>
             <div class="btn-group">
                 <button class="btn btn-print" id="printAllBtn" onclick="printTiles()">🖨️ PRINT ALL TILES</button>
-                <a class="btn btn-outline" href="poster.html">← SINGLE A3 POSTER</a>
-                <a class="btn btn-outline" href="index.html">LIVE DISPLAY</a>
+                <a class="btn btn-outline" id="linkSinglePoster" href="poster.html">← SINGLE A3 POSTER</a>
+                <a class="btn btn-outline" id="linkLiveDisplay" href="index.html">LIVE DISPLAY</a>
             </div>
         </div>
 
         <div class="grid-toolbar">
+            <div class="toggle-group">
+                <span>POSTER:</span>
+                <button class="toggle-btn active" id="btnPosterAll" onclick="switchPoster('all')">🎃 ALL EVENTS</button>
+                <button class="toggle-btn" id="btnPosterKaraoke" onclick="switchPoster('karaoke')">🎤 KARAOKE ONLY</button>
+            </div>
+
             <div class="toggle-group">
                 <span>LAYOUT GRID:</span>
                 <button class="toggle-btn active" id="btnGrid2x2" onclick="setGridLayout(2, 2)">2×2 (4 PAGES)</button>
@@ -414,9 +422,9 @@
 
             <div class="toggle-group">
                 <span>OVERLAP SEAM:</span>
-                <button class="toggle-btn active" id="btnOverlap15" onclick="setOverlap(0.06, '15mm')">15MM (RECOMMENDED)</button>
+                <button class="toggle-btn active" id="btnOverlap0" onclick="setOverlap(0.00, '0mm (BUTT JOINT)')">0MM (BORDERLESS / NO MARGINS)</button>
                 <button class="toggle-btn" id="btnOverlap10" onclick="setOverlap(0.04, '10mm')">10MM (TAPE OVERLAP)</button>
-                <button class="toggle-btn" id="btnOverlap0" onclick="setOverlap(0.00, '0mm (BUTT JOINT)')">0MM (BORDERLESS)</button>
+                <button class="toggle-btn" id="btnOverlap15" onclick="setOverlap(0.06, '15mm')">15MM (OVERLAP BLEED)</button>
             </div>
 
             <div class="toggle-group">
@@ -435,9 +443,9 @@
     <!-- Assembly Guide Card -->
     <section class="assembly-guide-card">
         <div class="guide-steps">
-            <span><strong>STEP 1 (PRINT):</strong> Click <strong>🖨️ PRINT ALL TILES</strong>. In the print dialog, select <strong>Scale: 100% (or Actual Size)</strong> and <strong>Margins: None (or Minimum)</strong>.</span>
-            <span><strong>STEP 2 (LAYOUT):</strong> Lay out the printed sheets in order matching the numbered grid preview.</span>
-            <span><strong>STEP 3 (PERFECT MATCH):</strong> Overlap duplicate edges between adjacent sheets until artwork lines up seamlessly, then tape from behind!</span>
+            <span><strong>STEP 1 (PRINT):</strong> Click <strong>🖨️ PRINT ALL TILES</strong>. In the print dialog, select <strong>Scale: 100% (or Actual Size)</strong> and <strong>Margins: None</strong>.</span>
+            <span><strong>STEP 2 (LAYOUT):</strong> Lay out the printed sheets in order matching the numbered grid preview below.</span>
+            <span><strong>STEP 3 (SEAMLESS JOIN):</strong> With <strong>0MM (BORDERLESS)</strong> selected, join edges flush (butt joint) and tape from behind. No artwork is repeated or lost!</span>
         </div>
         <div class="mini-grid-preview" id="miniGridPreview">
             <!-- Dynamic mini cells rendered by JS -->
@@ -450,18 +458,45 @@
     </main>
 
     <script>
+        const POSTERS = {
+            all: {
+                src: 'halloween_a3_poster.jpg?v=20261022-2',
+                singleHref: 'poster.html',
+                liveHref: 'index.html'
+            },
+            karaoke: {
+                src: 'halloween_karaoke_poster.jpg?v=20261028',
+                singleHref: 'posterkaraoke.html',
+                liveHref: 'karaoke.html'
+            }
+        };
+
+        let currentPosterKey = 'all';
         let currentCols = 2;
         let currentRows = 2;
-        let currentOverlap = 0.06; // 6% overlap (~15mm)
-        let overlapLabel = '15mm';
+        let currentOverlap = 0.00; // 0mm Borderless Butt-Joint by default
+        let overlapLabel = '0mm (BUTT JOINT)';
         let currentPaper = 'A4';
         let showGuides = false;
-
-        const posterSrc = 'halloween_a3_poster.jpg?v=20261022-2';
         let masterImage = null;
 
         function printTiles() {
             window.print();
+        }
+
+        function switchPoster(key) {
+            if (!POSTERS[key]) return;
+            currentPosterKey = key;
+            document.getElementById('btnPosterAll').classList.toggle('active', key === 'all');
+            document.getElementById('btnPosterKaraoke').classList.toggle('active', key === 'karaoke');
+            document.getElementById('linkSinglePoster').href = POSTERS[key].singleHref;
+            document.getElementById('linkLiveDisplay').href = POSTERS[key].liveHref;
+
+            masterImage = new Image();
+            masterImage.src = POSTERS[key].src;
+            masterImage.onload = () => {
+                renderTiles();
+            };
         }
 
         function setGridLayout(cols, rows) {
@@ -477,9 +512,9 @@
         function setOverlap(ratio, label) {
             currentOverlap = ratio;
             overlapLabel = label;
-            document.getElementById('btnOverlap15').classList.toggle('active', ratio === 0.06);
-            document.getElementById('btnOverlap10').classList.toggle('active', ratio === 0.04);
             document.getElementById('btnOverlap0').classList.toggle('active', ratio === 0.00);
+            document.getElementById('btnOverlap10').classList.toggle('active', ratio === 0.04);
+            document.getElementById('btnOverlap15').classList.toggle('active', ratio === 0.06);
             renderTiles();
         }
 
@@ -496,7 +531,6 @@
             const btn = document.getElementById('btnGuidesToggle');
             btn.classList.toggle('active', showGuides);
             btn.textContent = showGuides ? 'ALIGNMENT LINES: ON' : 'ALIGNMENT LINES: OFF';
-            document.body.classList.toggle('print-with-guides', showGuides);
             renderTiles();
         }
 
@@ -504,6 +538,11 @@
         function getPixelSlice(index, total, overlapRatio, totalPixels) {
             if (total === 1) {
                 return [0, totalPixels];
+            }
+            if (overlapRatio === 0) {
+                const start = Math.round(index * totalPixels / total);
+                const end = Math.round((index + 1) * totalPixels / total);
+                return [start, end];
             }
             const overlapPx = Math.round(totalPixels * overlapRatio);
             const W = Math.round((totalPixels + (total - 1) * overlapPx) / total);
@@ -534,7 +573,7 @@
             const imgW = masterImage.naturalWidth;
             const imgH = masterImage.naturalHeight;
 
-            // Target canvas resolution (sharp 300 DPI A4 equivalent)
+            // Target canvas resolution (sharp 300 DPI A4/A3 equivalent)
             const targetCanvasW = currentPaper === 'A3' ? 1754 : 1240;
             const targetCanvasH = currentPaper === 'A3' ? 2480 : 1754;
 
@@ -555,19 +594,6 @@
                     pageDiv.className = 'tile-page';
                     pageDiv.id = `tilePage_${pageNum}`;
 
-                    // Tile Info Badge (Screen Only)
-                    if (showGuides) {
-                        const badge = document.createElement('div');
-                        badge.className = 'tile-badge';
-                        badge.textContent = `PAGE ${pageNum}/${totalPages} [R${r + 1}:C${c + 1}]`;
-                        pageDiv.appendChild(badge);
-
-                        const cropTL = document.createElement('div'); cropTL.className = 'corner-crop-mark crop-tl'; pageDiv.appendChild(cropTL);
-                        const cropTR = document.createElement('div'); cropTR.className = 'corner-crop-mark crop-tr'; pageDiv.appendChild(cropTR);
-                        const cropBL = document.createElement('div'); cropBL.className = 'corner-crop-mark crop-bl'; pageDiv.appendChild(cropBL);
-                        const cropBR = document.createElement('div'); cropBR.className = 'corner-crop-mark crop-br'; pageDiv.appendChild(cropBR);
-                    }
-
                     // Compute pixel slice on master image
                     const [sx, ex] = getPixelSlice(c, currentCols, currentOverlap, imgW);
                     const [sy, ey] = getPixelSlice(r, currentRows, currentOverlap, imgH);
@@ -581,57 +607,43 @@
                     canvas.height = targetCanvasH;
                     const ctx = canvas.getContext('2d');
 
-                    // Draw the exact slice cleanly
+                    // Draw the exact slice cleanly without baked-in text or markings
                     ctx.drawImage(masterImage, sx, sy, sw, sh, 0, 0, targetCanvasW, targetCanvasH);
+                    pageDiv.appendChild(canvas);
 
-                    // If guidelines are enabled and overlap exists, draw faint alignment seam guide
-                    if (showGuides && currentOverlap > 0) {
-                        ctx.save();
-                        ctx.strokeStyle = 'rgba(255, 170, 0, 0.7)';
-                        ctx.lineWidth = 2;
-                        ctx.setLineDash([8, 6]);
+                    // Screen-Only Overlays (Badges, Crop Marks, Overlap Guides)
+                    if (showGuides) {
+                        const badge = document.createElement('div');
+                        badge.className = 'tile-badge';
+                        badge.textContent = `PAGE ${pageNum}/${totalPages} [R${r + 1}:C${c + 1}]`;
+                        pageDiv.appendChild(badge);
 
-                        // Right seam (overlap zone where next col overlaps)
-                        if (c < currentCols - 1) {
-                            const [nextSx] = getPixelSlice(c + 1, currentCols, currentOverlap, imgW);
-                            const seamX = Math.round(((nextSx - sx) / sw) * targetCanvasW);
-                            ctx.beginPath();
-                            ctx.moveTo(seamX, 0);
-                            ctx.lineTo(seamX, targetCanvasH);
-                            ctx.stroke();
-
-                            // Overlap indicator
-                            ctx.fillStyle = 'rgba(255, 170, 0, 0.85)';
-                            ctx.font = 'bold 18px sans-serif';
-                            ctx.fillText('✂️ OVERLAP SEAM', seamX + 8, targetCanvasH - 30);
-                        }
-
-                        // Bottom seam (overlap zone where next row overlaps)
-                        if (r < currentRows - 1) {
-                            const [nextSy] = getPixelSlice(r + 1, currentRows, currentOverlap, imgH);
-                            const seamY = Math.round(((nextSy - sy) / sh) * targetCanvasH);
-                            ctx.beginPath();
-                            ctx.moveTo(0, seamY);
-                            ctx.lineTo(targetCanvasW, seamY);
-                            ctx.stroke();
-
-                            ctx.fillStyle = 'rgba(255, 170, 0, 0.85)';
-                            ctx.font = 'bold 18px sans-serif';
-                            ctx.fillText('✂️ OVERLAP SEAM', 30, seamY - 12);
-                        }
-                        ctx.restore();
+                        const cropTL = document.createElement('div'); cropTL.className = 'corner-crop-mark crop-tl'; pageDiv.appendChild(cropTL);
+                        const cropTR = document.createElement('div'); cropTR.className = 'corner-crop-mark crop-tr'; pageDiv.appendChild(cropTR);
+                        const cropBL = document.createElement('div'); cropBL.className = 'corner-crop-mark crop-bl'; pageDiv.appendChild(cropBL);
+                        const cropBR = document.createElement('div'); cropBR.className = 'corner-crop-mark crop-br'; pageDiv.appendChild(cropBR);
                     }
 
-                    pageDiv.appendChild(canvas);
                     container.appendChild(pageDiv);
                 }
             }
         }
 
-        // Initialize on image load
+        // Initialize on load with URL search param support (?poster=karaoke)
         window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const requestedPoster = urlParams.get('poster');
+            if (requestedPoster === 'karaoke') {
+                currentPosterKey = 'karaoke';
+            }
+
+            document.getElementById('btnPosterAll').classList.toggle('active', currentPosterKey === 'all');
+            document.getElementById('btnPosterKaraoke').classList.toggle('active', currentPosterKey === 'karaoke');
+            document.getElementById('linkSinglePoster').href = POSTERS[currentPosterKey].singleHref;
+            document.getElementById('linkLiveDisplay').href = POSTERS[currentPosterKey].liveHref;
+
             masterImage = new Image();
-            masterImage.src = posterSrc;
+            masterImage.src = POSTERS[currentPosterKey].src;
             masterImage.onload = () => {
                 renderTiles();
             };
