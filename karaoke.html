@@ -71,6 +71,7 @@
         .text-line {
             display: block;
             margin-bottom: 2vh;
+            white-space: nowrap;
         }
         
         h1 span {
@@ -79,7 +80,7 @@
             transform: translateY(30px) scale(0.9) rotateX(45deg);
             filter: blur(10px);
             display: inline-block;
-            margin: 0 0.15em;
+            margin: 0 0.12em;
         }
 
         h1 span.revealed {
@@ -171,47 +172,47 @@
         // Message Cycling - Halloween Karaoke
         const messages = [
             {
-                color: "#ffaa00",
-                size: "5.5vw",
-                lines: [
-                    ["DON'T", "BE", "A", "GHOST..."],
-                    ["THIS", "HALLOWEEN..."]
-                ]
+                 color: "#ffaa00",
+                 size: "7vw",
+                 lines: [
+                     ["DON'T", "BE", "A", "GHOST..."],
+                     ["THIS", "HALLOWEEN..."]
+                 ]
             },
             {
-                color: "#ffcc00",
-                size: "5.5vw",
-                lines: [
-                    ["join", "us", "for"],
-                    ["a", "very"],
-                    ["S P O O K Y,", ".", ".", "."]
-                ]
+                 color: "#ffcc00",
+                 size: "7vw",
+                 lines: [
+                     ["join", "us", "for"],
+                     ["a", "very"],
+                     ["S P O O K Y,", ".", ".", "."]
+                 ]
             },
             {
-                color: "#ff3366",
-                size: "5.5vw",
-                lines: [
-                    ["HALLOWEEN", "KARAOKE"],
-                    ["with", "Rosie", "&", "Kevvy", "K"],
-                    ["from", "8pm,", "Saturday", "31st", "October"]
-                ]
+                 color: "#ff3366",
+                 size: "7vw",
+                 lines: [
+                     ["HALLOWEEN", "KARAOKE"],
+                     ["with", "Rosie", "&", "Kevvy", "K"],
+                     ["from", "8pm,", "Saturday", "31st", "October"]
+                 ]
             },
             {
-                color: "#ffaa00",
-                size: "5.5vw",
-                lines: [
-                    ["PRIZES", "FOR"],
-                    ["BEST", "DRESSED"],
-                    ["&", "BEST", "TABLE!"]
-                ]
+                 color: "#ffaa00",
+                 size: "7vw",
+                 lines: [
+                     ["PRIZES", "FOR"],
+                     ["BEST", "DRESSED"],
+                     ["&", "BEST", "TABLE!"]
+                 ]
             },
             {
-                color: "#00ff33",
-                size: "5.5vw",
-                lines: [
-                    ["BOOK", "NOW"],
-                    ["IF", "YOU", "DARE"]
-                ]
+                 color: "#00ff33",
+                 size: "7vw",
+                 lines: [
+                     ["BOOK", "NOW"],
+                     ["IF", "YOU", "DARE"]
+                 ]
             }
         ];
         let currentMessageIndex = 0;
@@ -306,7 +307,7 @@
             
             // Safely apply pre-calculated hardcoded viewport widths to prevent all clipping
             h1.style.fontSize = msg.size;
-            h1.style.letterSpacing = '3px';
+            h1.style.letterSpacing = '2px';
             
             let html = '';
             let wordIdx = 0;
