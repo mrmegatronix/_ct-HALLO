@@ -4,250 +4,271 @@
     <meta charset="UTF-8">
     <title>Halloween Karaoke at Coasters Tavern - 3D HOLOGRAPHIC PROJECTION</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Orbitron:wght@600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Creepster&display=swap');
 
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 1920px;
-            height: 1080px;
+            margin: 0; padding: 0;
+            width: 1920px; height: 1080px;
             overflow: hidden;
-            background-color: #000;
+            background-color: #020712;
+            font-family: 'Creepster', cursive;
         }
 
-        /* 3D Holographic Stage with Perspective */
-        .holo-stage {
+        .holo-chamber {
             position: absolute;
             top: 0; left: 0;
             width: 1920px; height: 1080px;
             perspective: 1200px;
-            perspective-origin: 50% 50%;
+            perspective-origin: 50% 45%;
             overflow: hidden;
-            background: radial-gradient(circle at 50% 50%, #030c1d 0%, #01050d 60%, #000 100%);
+            background: radial-gradient(circle at 50% 50%, #05162e 0%, #020917 55%, #000308 100%);
         }
 
-        /* Projector Emitter Base */
-        .holo-emitter {
+        /* Perspective 3D Grid Floor */
+        .holo-floor {
             position: absolute;
-            bottom: -50px;
-            left: 50%;
-            transform: translateX(-50%) rotateX(78deg);
-            width: 1200px;
-            height: 220px;
+            bottom: -180px; left: 50%;
+            width: 2200px; height: 750px;
+            transform: translateX(-50%) rotateX(80deg);
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.35) 1.5px, transparent 1.5px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.35) 1.5px, transparent 1.5px);
+            background-size: 65px 65px;
+            mask-image: radial-gradient(ellipse at 50% 35%, black 20%, transparent 75%);
+            -webkit-mask-image: radial-gradient(ellipse at 50% 35%, black 20%, transparent 75%);
+            pointer-events: none;
+        }
+
+        /* Projector Disc Base */
+        .projector-base {
+            position: absolute;
+            bottom: 20px; left: 50%;
+            transform: translateX(-50%) rotateX(76deg);
+            width: 1100px; height: 300px;
             border-radius: 50%;
-            background: radial-gradient(ellipse at center, rgba(0, 255, 255, 0.95) 0%, rgba(0, 180, 255, 0.5) 35%, rgba(0, 70, 255, 0.15) 65%, transparent 100%);
-            box-shadow: 0 0 140px rgba(0, 240, 255, 0.9), inset 0 0 80px rgba(0, 255, 255, 1);
+            border: 4px solid #00f0ff;
+            background: radial-gradient(ellipse at center, rgba(0, 255, 255, 1) 0%, rgba(0, 200, 255, 0.6) 25%, rgba(0, 80, 220, 0.2) 55%, transparent 100%);
+            box-shadow: 0 0 100px #00f0ff, 0 0 200px rgba(0, 240, 255, 0.8), inset 0 0 90px #00f0ff;
             z-index: 2;
             pointer-events: none;
-            animation: emitterPulse 4s ease-in-out infinite alternate;
         }
 
-        @keyframes emitterPulse {
-            0% { opacity: 0.85; filter: brightness(1); }
-            100% { opacity: 1.0; filter: brightness(1.3); }
-        }
-
-        /* Upward Volumetric Hologram Light Cone */
-        .holo-beam {
+        .projector-ring-inner {
             position: absolute;
-            bottom: 0;
-            left: 50%;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            border: 3px dashed rgba(0, 255, 255, 0.9);
+            width: 760px; height: 210px;
+            animation: ringRotate 24s linear infinite;
+        }
+
+        @keyframes ringRotate {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Volumetric Holographic Light Cone */
+        .volumetric-cone {
+            position: absolute;
+            bottom: 90px; left: 50%;
             transform: translateX(-50%);
-            width: 1920px;
-            height: 1080px;
-            clip-path: polygon(26% 100%, 74% 100%, 98% 0%, 2% 0%);
-            background: linear-gradient(0deg, rgba(0, 240, 255, 0.22) 0%, rgba(0, 180, 255, 0.08) 45%, rgba(0, 100, 255, 0.02) 85%, transparent 100%);
+            width: 1750px; height: 990px;
+            clip-path: polygon(32% 100%, 68% 100%, 96% 0%, 4% 0%);
+            background: linear-gradient(0deg, 
+                rgba(0, 240, 255, 0.4) 0%, 
+                rgba(0, 200, 255, 0.15) 35%, 
+                rgba(0, 100, 255, 0.03) 75%, 
+                transparent 100%);
             mix-blend-mode: screen;
-            z-index: 3;
             pointer-events: none;
-            animation: beamFlicker 6s ease-in-out infinite alternate;
+            z-index: 3;
         }
 
-        @keyframes beamFlicker {
-            0%, 100% { opacity: 0.9; }
-            50% { opacity: 0.75; }
-            52% { opacity: 1; }
-            54% { opacity: 0.8; }
-        }
-
-        /* 3D Holographic Plane Container */
-        .holo-plane {
+        /* 3D Floating Hologram Subject Container */
+        .holo-subject-wrap {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 35px; left: 50%;
+            transform: translateX(-50%) translateZ(60px) rotateX(4deg);
+            width: 1050px; height: 540px;
             transform-style: preserve-3d;
-            transform: translateZ(30px) rotateX(2deg) rotateY(-1deg);
-            z-index: 4;
-            transition: transform 0.15s ease-out;
-            animation: holoFloat 8s ease-in-out infinite alternate;
+            z-index: 5;
+            transition: transform 0.12s ease-out;
+            animation: holoFloat 6s ease-in-out infinite alternate;
         }
 
         @keyframes holoFloat {
-            0% { transform: translateZ(25px) rotateX(2.5deg) rotateY(-2deg) translateY(-8px); }
-            50% { transform: translateZ(40px) rotateX(0deg) rotateY(0deg) translateY(0px); }
-            100% { transform: translateZ(35px) rotateX(-2deg) rotateY(2.2deg) translateY(8px); }
+            0% { transform: translateX(-50%) translateZ(40px) rotateX(5deg) rotateY(-3deg) translateY(-8px); }
+            50% { transform: translateX(-50%) translateZ(70px) rotateX(1deg) rotateY(0deg) translateY(0px); }
+            100% { transform: translateX(-50%) translateZ(50px) rotateX(-2deg) rotateY(3deg) translateY(8px); }
         }
 
-        .holo-layer {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-image: url('coasters_halloween.jpg?v=7');
-            background-size: cover;
-            background-position: center;
-        }
-
-        /* Base Artwork Layer with Hologram Glow */
-        .holo-base {
-            filter: brightness(1.15) contrast(1.18) drop-shadow(0 0 45px rgba(0, 240, 255, 0.55));
-            opacity: 0.96;
-        }
-
-        /* Stereoscopic 3D Depth: Cyan Left Channel */
-        .holo-cyan {
-            transform: translateZ(18px) translateX(-6px);
-            filter: brightness(1.4) hue-rotate(150deg) saturate(2);
-            opacity: 0.38;
-            mix-blend-mode: screen;
-            pointer-events: none;
-        }
-
-        /* Stereoscopic 3D Depth: Red/Magenta Right Channel */
-        .holo-red {
-            transform: translateZ(18px) translateX(6px);
-            filter: brightness(1.3) hue-rotate(310deg) saturate(2);
-            opacity: 0.34;
-            mix-blend-mode: screen;
-            pointer-events: none;
-        }
-
-        /* Hologram Scanlines */
-        .holo-scanlines {
-            background-image: repeating-linear-gradient(
-                0deg,
-                rgba(0, 240, 255, 0.22) 0px,
-                rgba(0, 240, 255, 0.22) 2px,
-                transparent 2px,
-                transparent 5px
-            );
-            background-size: 100% 5px;
-            mix-blend-mode: overlay;
-            opacity: 0.45;
-            pointer-events: none;
-        }
-
-        /* Moving Laser Scan Sweep */
-        .holo-beam-sweep {
-            background: linear-gradient(
-                180deg,
-                transparent 0%,
-                rgba(0, 240, 255, 0.08) 42%,
-                rgba(0, 240, 255, 0.5) 50%,
-                rgba(255, 255, 255, 0.8) 51%,
-                rgba(0, 240, 255, 0.5) 52%,
-                rgba(0, 240, 255, 0.08) 58%,
-                transparent 100%
-            );
-            background-size: 100% 280px;
-            background-repeat: no-repeat;
-            background-position: 0 -280px;
-            mix-blend-mode: screen;
-            opacity: 0.65;
-            pointer-events: none;
-            animation: laserSweep 5s linear infinite;
-        }
-
-        @keyframes laserSweep {
-            0% { background-position: 0 -280px; }
-            100% { background-position: 0 1360px; }
-        }
-
-        /* Occasional Holographic Glitch Trigger */
-        .holo-plane.glitch {
+        .holo-subject-wrap.glitch {
             animation: holoGlitch 0.4s ease-out;
         }
 
         @keyframes holoGlitch {
-            0% { transform: translateZ(30px) rotateX(2deg) rotateY(-1deg) skewX(0deg); filter: none; }
-            20% { transform: translateZ(45px) rotateX(3deg) rotateY(2deg) skewX(-2deg) translateX(8px); filter: hue-rotate(90deg) contrast(1.5); }
-            40% { transform: translateZ(25px) rotateX(1deg) rotateY(-3deg) skewX(2deg) translateX(-8px); filter: hue-rotate(-90deg) brightness(1.4); }
-            60% { transform: translateZ(35px) rotateX(2.5deg) rotateY(0deg) skewX(-1deg); filter: contrast(2); }
-            80% { transform: translateZ(30px) rotateX(2deg) rotateY(-1deg) skewX(1deg); filter: brightness(1.2); }
-            100% { transform: translateZ(30px) rotateX(2deg) rotateY(-1deg) skewX(0deg); filter: none; }
+            0% { transform: translateX(-50%) translateZ(60px) rotateX(4deg) skewX(0deg); filter: none; }
+            20% { transform: translateX(-48%) translateZ(75px) rotateX(6deg) skewX(-3deg); filter: hue-rotate(90deg) contrast(2); }
+            40% { transform: translateX(-52%) translateZ(45px) rotateX(2deg) skewX(3deg); filter: hue-rotate(-90deg) brightness(1.6); }
+            60% { transform: translateX(-50%) translateZ(65px) rotateX(5deg) skewX(-1deg); filter: contrast(2.5); }
+            100% { transform: translateX(-50%) translateZ(60px) rotateX(4deg) skewX(0deg); filter: none; }
         }
 
-        /* Hologram Calibration Frame */
-        .corner {
+        /* The Hologram Image Layers */
+        .holo-plate {
             position: absolute;
-            width: 60px;
-            height: 60px;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border-radius: 16px;
+            background-size: cover;
+            background-position: center;
+            pointer-events: none;
+        }
+
+        /* Layer 1: Ambient volumetric cyan bloom */
+        .holo-plate.plate-bloom {
+            background-image: url('coasters_halloween.jpg?v=7');
+            transform: translateZ(-30px) scale(1.02);
+            filter: grayscale(100%) brightness(1.6) contrast(150%) drop-shadow(0 0 60px #00f0ff);
+            opacity: 0.55;
+            mix-blend-mode: screen;
+        }
+
+        /* Layer 2: Main Cyan Holographic Image with Scanline Raster Mask */
+        .holo-plate.plate-cyan {
+            background-image: url('coasters_halloween.jpg?v=7');
+            transform: translateZ(0px) translateX(-4px);
+            filter: grayscale(100%) brightness(1.6) contrast(1.7) sepia(100%) hue-rotate(145deg) saturate(6);
+            opacity: 0.95;
+            mix-blend-mode: screen;
+            mask-image: repeating-linear-gradient(0deg, black 0px, black 3px, transparent 3px, transparent 6px);
+            -webkit-mask-image: repeating-linear-gradient(0deg, black 0px, black 3px, transparent 3px, transparent 6px);
+        }
+
+        /* Layer 3: Stereoscopic Red/Magenta Laser Depth Dispersion */
+        .holo-plate.plate-red {
+            background-image: url('coasters_halloween.jpg?v=7');
+            transform: translateZ(20px) translateX(5px);
+            filter: grayscale(100%) brightness(1.4) contrast(1.7) sepia(100%) hue-rotate(295deg) saturate(5);
+            opacity: 0.65;
+            mix-blend-mode: screen;
+            mask-image: repeating-linear-gradient(0deg, transparent 0px, transparent 3px, black 3px, black 6px);
+            -webkit-mask-image: repeating-linear-gradient(0deg, transparent 0px, transparent 3px, black 3px, black 6px);
+        }
+
+        /* Layer 4: Original glowing warm highlights (windows & jack-o-lantern eyes) popping through */
+        .holo-plate.plate-highlights {
+            background-image: url('coasters_halloween.jpg?v=7');
+            transform: translateZ(35px);
+            filter: contrast(2.5) brightness(1.5);
+            opacity: 0.5;
+            mix-blend-mode: screen;
+            mask-image: repeating-linear-gradient(0deg, black 0px, black 4px, transparent 4px, transparent 7px);
+            -webkit-mask-image: repeating-linear-gradient(0deg, black 0px, black 4px, transparent 4px, transparent 7px);
+        }
+
+        /* Active Laser Scanbeam Sweep */
+        .holo-scanbeam {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: 16px;
+            background: linear-gradient(180deg, 
+                transparent 0%, 
+                rgba(0, 240, 255, 0.15) 35%, 
+                rgba(0, 255, 255, 0.8) 50%, 
+                rgba(255, 255, 255, 1) 51%, 
+                rgba(0, 255, 255, 0.8) 52%, 
+                rgba(0, 240, 255, 0.15) 65%, 
+                transparent 100%);
+            background-size: 100% 180px;
+            background-repeat: no-repeat;
+            background-position: 0 -180px;
+            mix-blend-mode: screen;
+            transform: translateZ(50px);
+            pointer-events: none;
+            animation: laserSweep 4.5s linear infinite;
+        }
+
+        @keyframes laserSweep {
+            0% { background-position: 0 -180px; }
+            100% { background-position: 0 720px; }
+        }
+
+        /* Cybernetic Hologram Frame & Target HUD */
+        .holo-hud-corner {
+            position: absolute;
+            width: 45px; height: 45px;
             border-color: #00f0ff;
             border-style: solid;
             pointer-events: none;
-            z-index: 10;
             box-shadow: 0 0 20px #00f0ff;
+            transform: translateZ(70px);
         }
-        .top-left { top: 30px; left: 30px; border-width: 4px 0 0 4px; }
-        .top-right { top: 30px; right: 30px; border-width: 4px 4px 0 0; }
-        .bottom-left { bottom: 30px; left: 30px; border-width: 0 0 4px 4px; }
-        .bottom-right { bottom: 30px; right: 30px; border-width: 0 4px 4px 0; }
+        .c-tl { top: -14px; left: -14px; border-width: 4px 0 0 4px; }
+        .c-tr { top: -14px; right: -14px; border-width: 4px 4px 0 0; }
+        .c-bl { bottom: -14px; left: -14px; border-width: 0 0 4px 4px; }
+        .c-br { bottom: -14px; right: -14px; border-width: 0 4px 4px 0; }
 
-        .holo-badge {
+        .holo-status {
             position: absolute;
-            top: 36px;
-            left: 105px;
+            top: -38px; left: 0;
             font-family: 'Orbitron', monospace;
-            font-size: 15px;
+            font-size: 13px;
+            font-weight: 900;
             color: #00f0ff;
             letter-spacing: 4px;
-            text-shadow: 0 0 12px #00f0ff;
-            background: rgba(3, 14, 33, 0.75);
-            padding: 6px 16px;
+            text-shadow: 0 0 15px #00f0ff;
+            background: rgba(2, 12, 30, 0.85);
+            border: 1px solid #00f0ff;
+            padding: 4px 14px;
             border-radius: 4px;
-            border: 1px solid rgba(0, 240, 255, 0.4);
-            z-index: 10;
-            pointer-events: none;
+            transform: translateZ(60px);
+        }
+
+        .holo-coords {
+            position: absolute;
+            bottom: -34px; right: 0;
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            color: #00f0ff;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #00f0ff;
+            transform: translateZ(60px);
         }
 
         canvas {
             position: absolute;
             top: 0; left: 0;
             width: 1920px; height: 1080px;
-            z-index: 5;
-            pointer-events: none;
-        }
-
-        .vignette {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.95) 100%);
-            z-index: 6;
+            z-index: 10;
             pointer-events: none;
         }
 
         .content {
             position: absolute;
-            bottom: 10%;
+            bottom: 25px;
             width: 100%;
             text-align: center;
-            z-index: 10;
+            z-index: 25;
             font-family: 'Creepster', cursive;
         }
 
         h1 {
-            font-size: 150px;
-            letter-spacing: 5px;
-            color: #fff;
+            font-size: 5.8vw;
+            letter-spacing: 2px;
+            color: #ffffff;
             margin: 0;
             text-transform: uppercase;
             white-space: normal;
             line-height: 1.0;
-            -webkit-text-stroke: 4px #000;
+            text-shadow: 0 0 30px #00f0ff, 0 0 60px #0088ff, 0 10px 20px #000;
+            -webkit-text-stroke: 3px #001020;
         }
         
         .text-line {
             display: block;
-            margin-bottom: 2vh;
+            margin-bottom: 1.5vh;
             white-space: nowrap;
         }
         
@@ -276,17 +297,17 @@
         .speech-bubble {
             position: absolute;
             left: 50%;
-            top: 27%;
+            top: 25%;
             transform: translate(-50%, -100%) scale(0);
             background: #ffffff;
             color: #000000;
             font-family: 'Creepster', cursive;
-            font-size: 130px;
-            padding: 10px 70px;
-            border-radius: 60px;
-            border: 6px solid #000000;
-            box-shadow: 0 0 50px rgba(255, 120, 0, 0.9), 0 15px 35px rgba(0, 0, 0, 0.9);
-            z-index: 25;
+            font-size: 110px;
+            padding: 10px 60px;
+            border-radius: 50px;
+            border: 5px solid #000000;
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.9), 0 15px 35px rgba(0, 0, 0, 0.9);
+            z-index: 30;
             opacity: 0;
             pointer-events: none;
             transition: opacity 1.5s ease, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -299,10 +320,10 @@
         .speech-bubble::before {
             content: '';
             position: absolute;
-            bottom: -50px;
+            bottom: -40px;
             left: 50%;
             transform: translateX(-50%);
-            border-width: 50px 32px 0;
+            border-width: 40px 25px 0;
             border-style: solid;
             border-color: #000000 transparent transparent transparent;
             display: block;
@@ -312,10 +333,10 @@
         .speech-bubble::after {
             content: '';
             position: absolute;
-            bottom: -40px;
+            bottom: -30px;
             left: 50%;
             transform: translateX(-50%);
-            border-width: 40px 24px 0;
+            border-width: 30px 18px 0;
             border-style: solid;
             border-color: #ffffff transparent transparent transparent;
             display: block;
@@ -329,34 +350,33 @@
     </style>
 </head>
 <body>
-    <div class="holo-stage" id="holoStage">
-        <!-- Volumetric Projector Emitter & Light Cone -->
-        <div class="holo-emitter"></div>
-        <div class="holo-beam"></div>
+    <div class="holo-chamber" id="holoChamber">
+        <div class="holo-floor"></div>
+        <div class="projector-base">
+            <div class="projector-ring-inner"></div>
+        </div>
+        <div class="volumetric-cone"></div>
 
-        <!-- 3D Holographic Plane -->
-        <div class="holo-plane" id="holoPlane">
-            <div class="holo-layer holo-base"></div>
-            <div class="holo-layer holo-cyan"></div>
-            <div class="holo-layer holo-red"></div>
-            <div class="holo-layer holo-scanlines"></div>
-            <div class="holo-layer holo-beam-sweep"></div>
+        <div class="holo-subject-wrap" id="holoSubject">
+            <div class="holo-plate plate-bloom"></div>
+            <div class="holo-plate plate-cyan"></div>
+            <div class="holo-plate plate-red"></div>
+            <div class="holo-plate plate-highlights"></div>
+            <div class="holo-scanbeam"></div>
+            <div class="holo-hud-corner c-tl"></div>
+            <div class="holo-hud-corner c-tr"></div>
+            <div class="holo-hud-corner c-bl"></div>
+            <div class="holo-hud-corner c-br"></div>
+            <div class="holo-status">HOLOGRAM PROJECTOR // 3D OPTICAL FIELD // 60 FPS</div>
+            <div class="holo-coords">TARGET: COASTERS TAVERN // HALLOWEEN 2026</div>
         </div>
 
         <canvas id="fx"></canvas>
-        <div class="vignette"></div>
 
         <div class="content">
             <h1></h1>
         </div>
         <div class="speech-bubble" id="booBubble">Boo!</div>
-
-        <!-- Holographic HUD Frame -->
-        <div class="corner top-left"></div>
-        <div class="corner top-right"></div>
-        <div class="corner bottom-left"></div>
-        <div class="corner bottom-right"></div>
-        <div class="holo-badge">3D HOLOGRAPHIC PROJECTION // STEREOSCOPIC DEPTH</div>
     </div>
 
     <script>
@@ -371,7 +391,7 @@
         const messages = [
             {
                  color: "#ffaa00",
-                 size: "7vw",
+                 size: "5.8vw",
                  lines: [
                      ["DON'T", "BE", "A", "GHOST..."],
                      ["THIS", "HALLOWEEN..."]
@@ -379,7 +399,7 @@
             },
             {
                  color: "#ffcc00",
-                 size: "7vw",
+                 size: "5.8vw",
                  lines: [
                      ["join", "us", "for"],
                      ["a", "very"],
@@ -388,7 +408,7 @@
             },
             {
                  color: "#ff3366",
-                 size: "7vw",
+                 size: "5.8vw",
                  lines: [
                      ["HALLOWEEN", "KARAOKE"],
                      ["with", "Rosie", "&", "Kevvy", "K"],
@@ -397,7 +417,7 @@
             },
             {
                  color: "#ffaa00",
-                 size: "7vw",
+                 size: "5.8vw",
                  lines: [
                      ["PRIZES", "FOR"],
                      ["BEST", "DRESSED"],
@@ -406,7 +426,7 @@
             },
             {
                  color: "#00ff33",
-                 size: "7vw",
+                 size: "5.8vw",
                  lines: [
                      ["BOOK", "NOW"],
                      ["IF", "YOU", "DARE"]
@@ -492,7 +512,7 @@
                 lightningPath.push({x: cx, y: cy});
             }
             lightning = 1.0;
-            const plane = document.getElementById('holoPlane');
+            const plane = document.getElementById('holoSubject');
             if (plane) {
                 plane.classList.remove('glitch');
                 void plane.offsetWidth;
@@ -518,7 +538,7 @@
             
             const h1 = document.querySelector('.content h1');
             h1.style.color = '#ffffff';
-            h1.style.textShadow = `0 0 30px #fff, 0 10px 20px #000, 0 0 10px #000`;
+            h1.style.textShadow = `0 0 30px #00f0ff, 0 0 60px #0088ff, 0 10px 20px #000`;
             
             // Safely apply pre-calculated hardcoded viewport widths to prevent all clipping
             h1.style.fontSize = msg.size;
@@ -1006,13 +1026,13 @@
             }
         });
         
-        // Interactive 3D mouse parallax
-        const holoPlane = document.getElementById('holoPlane');
+                // Interactive 3D mouse parallax
+        const holoSubject = document.getElementById('holoSubject');
         window.addEventListener('mousemove', (e) => {
-            if (!holoPlane) return;
-            const xOffset = (e.clientX / 1920 - 0.5) * 12;
-            const yOffset = (e.clientY / 1080 - 0.5) * -10;
-            holoPlane.style.transform = `translateZ(35px) rotateX(${yOffset}deg) rotateY(${xOffset}deg)`;
+            if (!holoSubject) return;
+            const xOffset = (e.clientX / 1920 - 0.5) * 16;
+            const yOffset = (e.clientY / 1080 - 0.5) * -12;
+            holoSubject.style.transform = `translateX(-50%) translateZ(60px) rotateX(${4 + yOffset}deg) rotateY(${xOffset}deg)`;
         });
 
         resetTimer();
