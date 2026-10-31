@@ -304,7 +304,13 @@
                         }
                         
                         currentMessageIndex = (currentMessageIndex + 1) % messages.length;
-                        setTimeout(runTextCycle, 3000);
+                        
+                        // Pause, show Boo! speech bubble for 20s, fade, and resume
+                        setTimeout(() => {
+                            showBooBubble(() => {
+                                runTextCycle();
+                            });
+                        }, 2500);
                     }, 6000);
                 }
             }, 1200);
