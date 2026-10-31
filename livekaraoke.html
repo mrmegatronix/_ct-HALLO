@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Live Halloween Karaoke at Coasters Tavern - PRO CANVAS</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 1920px;
+            height: 1080px;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .bg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: url('coasters_halloween.jpg?v=7');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(1.25);
+            z-index: 1;
+            animation: breathe 30s ease-in-out infinite alternate;
+        }
+
+        @keyframes breathe {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.02); }
+        }
+
+        canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 1920px; height: 1080px;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .vignette {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.95) 100%);
+            z-index: 6;
+            pointer-events: none;
+        }
+
+        .content {
+            position: absolute;
+            bottom: 10%;
+            width: 100%;
+            text-align: center;
+            z-index: 10;
+            font-family: 'Creepster', cursive;
+        }
+
+        h1 {
+            font-size: 150px;
+            letter-spacing: 5px;
+            color: #fff;
+            margin: 0;
+            text-transform: uppercase;
+            white-space: normal;
+            line-height: 1.0;
+            -webkit-text-stroke: 4px #000;
+        }
+        
+        .text-line {
+            display: block;
+            margin-bottom: 2vh;
+            white-space: nowrap;
+        }
+        
+        h1 span {
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            transform: translateY(30px) scale(0.9) rotateX(45deg);
+            filter: blur(10px);
+            display: inline-block;
+            margin: 0 0.12em;
+        }
+
+        h1 span.revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1) rotateX(0deg);
+            filter: blur(0px);
+        }
+
+        h1 span.exit {
+            transition: all 1.5s ease-in;
+            opacity: 0;
+            transform: translateY(-40px) scale(1.1) rotateX(-45deg);
+            filter: blur(15px);
+        }
+
+        .speech-bubble {
+            position: absolute;
+            left: 50%;
+            top: 27%;
+            transform: translate(-50%, -100%) scale(0);
+            background: #ffffff;
+            color: #000000;
+            font-family: 'Creepster', cursive;
+            font-size: 130px;
+            padding: 10px 70px;
+            border-radius: 60px;
+            border: 6px solid #000000;
+            box-shadow: 0 0 50px rgba(255, 120, 0, 0.9), 0 15px 35px rgba(0, 0, 0, 0.9);
+            z-index: 25;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.5s ease, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            line-height: 1;
+            letter-spacing: 4px;
+            white-space: nowrap;
+        }
+
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 50px 32px 0;
+            border-style: solid;
+            border-color: #000000 transparent transparent transparent;
+            display: block;
+            width: 0;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 40px 24px 0;
+            border-style: solid;
+            border-color: #ffffff transparent transparent transparent;
+            display: block;
+            width: 0;
+        }
+
+        .speech-bubble.show {
+            opacity: 1;
+            transform: translate(-50%, -100%) scale(1);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <canvas id="fx"></canvas>
+    <div class="vignette"></div>
+
+    <div class="content">
+        <h1></h1>
+    </div>
+    <div class="speech-bubble" id="booBubble">Boo!</div>
+
+    <script>
+        const canvas = document.getElementById('fx');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 1920;
+        canvas.height = 1080;
+
+        let time = 0;
+
+        // Message Cycling - Halloween Karaoke
+        const messages = [
+            {
+                 color: "#ff3366",
+                 size: "7vw",
+                 lines: [
+                     ["KARAOKE"],
+                     ["with", "Rosie", "&", "Kevvy", "K"],
+                     ["from", "8", "pm", "till", "late"]
+                 ]
+            }
+        ];
+        let currentMessageIndex = 0;
+
+        // Foreground Bats
+        const bats = Array.from({length: 8}, () => ({
+            x: Math.random() * 1920,
+            y: Math.random() * 400 + 50,
+            speed: Math.random() * 3 + 3,
+            scale: Math.random() * 0.4 + 0.3,
+            phase: Math.random() * Math.PI * 2
+        }));
+
+        // Distant Bats crossing the moon
+        const distantBats = Array.from({length: 15}, () => ({
+            x: Math.random() * 1920,
+            y: Math.random() * 200 + 100, // around the moon
+            speed: Math.random() * 1.5 + 1.5,
+            scale: Math.random() * 0.15 + 0.05,
+            phase: Math.random() * Math.PI * 2
+        }));
+        
+        const allBats = [...bats, ...distantBats];
+
+        // Witch Image Loading
+        const witchImg = new Image();
+        witchImg.src = 'witch.png';
+        let witch = { x: -200, y: 300, speed: 2.0, scale: 0.6 };
+
+
+
+        // Fog particles
+        const fogs = Array.from({length: 20}, () => ({
+            x: Math.random() * 1920,
+            y: 800 + Math.random() * 300,
+            radius: 200 + Math.random() * 300,
+            speed: Math.random() * 0.5 + 0.2,
+            opacity: Math.random() * 0.2 + 0.1
+        }));
+
+        // Owls in the trees
+        const owls = [
+            {x: 220, y: 380, scale: 0.95, timer: Math.random() * 100},
+            {x: 320, y: 250, scale: 0.8, timer: Math.random() * 100},
+            {x: 1680, y: 360, scale: 0.95, timer: Math.random() * 100},
+            {x: 1790, y: 460, scale: 0.85, timer: Math.random() * 100}
+        ];
+
+        // Lightning state
+        let lightning = 0;
+        let lightningPath = [];
+        let revealedWords = 0;
+        let totalWords = 0;
+        let isTextCycleActive = false;
+
+        function generateLightning() {
+            lightningPath = [];
+            let startX = Math.random() * 1920;
+            let targetX = 960 + (Math.random() - 0.5) * 600; // Strike towards foreground text area
+            
+            let cx = startX;
+            let cy = 0;
+            lightningPath.push({x: cx, y: cy});
+            
+            while(cy < 1080) {
+                cx += (Math.random() - 0.5) * 200 + (targetX - cx) * 0.15; // Pull towards target
+                cy += Math.random() * 80 + 50;
+                lightningPath.push({x: cx, y: cy});
+            }
+            lightning = 1.0;
+
+            // Reveal word on strike
+            if (isTextCycleActive && revealedWords < totalWords) {
+                let el = document.getElementById('word' + revealedWords);
+                if (el) {
+                    el.classList.remove('exit');
+                    el.classList.add('revealed');
+                }
+                revealedWords++;
+            }
+        }
+
+        function runTextCycle() {
+            let msg = messages[currentMessageIndex];
+            totalWords = msg.lines.reduce((acc, line) => acc + line.length, 0);
+            revealedWords = 0;
+            isTextCycleActive = true;
+            
+            const h1 = document.querySelector('.content h1');
+            h1.style.color = '#ffffff';
+            h1.style.textShadow = `0 0 30px #fff, 0 10px 20px #000, 0 0 10px #000`;
+            
+            // Safely apply pre-calculated hardcoded viewport widths to prevent all clipping
+            h1.style.fontSize = msg.size;
+            h1.style.letterSpacing = '2px';
+            
+            let html = '';
+            let wordIdx = 0;
+            msg.lines.forEach(line => {
+                html += `<div class="text-line">`;
+                line.forEach(word => {
+                    html += `<span id="word${wordIdx}">${word}</span>`;
+                    wordIdx++;
+                });
+                html += `</div>`;
+            });
+            h1.innerHTML = html;
+
+            // Sequential strikes to reveal message
+            let strikeInterval = setInterval(() => {
+                generateLightning();
+                if (revealedWords >= totalWords) {
+                    clearInterval(strikeInterval);
+                    isTextCycleActive = false;
+                    
+                    // Wait 6 seconds, then animate exit sequentially
+                    setTimeout(() => {
+                        for(let i=0; i<totalWords; i++) {
+                            setTimeout(() => {
+                                let el = document.getElementById('word' + i);
+                                if(el) el.classList.add('exit');
+                            }, i * 150); // Stagger the exit
+                        }
+                        
+                        currentMessageIndex = (currentMessageIndex + 1) % messages.length;
+                        setTimeout(runTextCycle, 3000);
+                    }, 6000);
+                }
+            }, 1200);
+        }
+
+        function showBooBubble(callback) {
+            const bubble = document.getElementById('booBubble');
+            if (!bubble) {
+                if (callback) callback();
+                return;
+            }
+
+            generateLightning();
+            bubble.classList.add('show');
+
+            // Hold for 20 seconds
+            setTimeout(() => {
+                bubble.classList.remove('show');
+                // Wait for fade-out transition, then resume message loop
+                setTimeout(() => {
+                    if (callback) callback();
+                }, 2000);
+            }, 20000);
+        }
+
+        // Random background strikes when not revealing text
+        setInterval(() => {
+            if (!isTextCycleActive && Math.random() > 0.4) generateLightning();
+        }, 5000);
+
+        // Start initial cycle
+        setTimeout(runTextCycle, 1000);
+
+        function drawBat(ctx, x, y, scale, wingAngle) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.scale(scale, scale);
+            ctx.fillStyle = '#050505';
+            
+            // Body
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 10, 25, 0, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Sharp Pointy Wings
+            ctx.save();
+            ctx.scale(1, Math.cos(wingAngle));
+            
+            // Left wing
+            ctx.beginPath();
+            ctx.moveTo(0, -10);
+            ctx.quadraticCurveTo(-40, -40, -120, -40); // Sharp tip
+            ctx.quadraticCurveTo(-80, -10, -100, 10);
+            ctx.quadraticCurveTo(-60, -5, -40, 20);
+            ctx.quadraticCurveTo(-20, 0, 0, 10);
+            ctx.fill();
+            
+            // Right wing
+            ctx.beginPath();
+            ctx.moveTo(0, -10);
+            ctx.quadraticCurveTo(40, -40, 120, -40);
+            ctx.quadraticCurveTo(80, -10, 100, 10);
+            ctx.quadraticCurveTo(60, -5, 40, 20);
+            ctx.quadraticCurveTo(20, 0, 0, 10);
+            ctx.fill();
+            
+            ctx.restore();
+            ctx.restore();
+        }
+
+        function drawWitch(ctx, x, y, scale, angle) {
+            if (!witchImg.complete || witchImg.width === 0) return;
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.scale(scale, scale);
+            ctx.rotate(angle);
+            ctx.drawImage(witchImg, -witchImg.width / 2, -witchImg.height / 2);
+            ctx.restore();
+        }
+
+        function drawFog(ctx) {
+            ctx.globalCompositeOperation = 'screen';
+            fogs.forEach(f => {
+                f.x -= f.speed;
+                if(f.x + f.radius < 0) f.x = 1920 + f.radius;
+
+                const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.radius);
+                grad.addColorStop(0, `rgba(150, 150, 180, ${f.opacity})`);
+                grad.addColorStop(1, 'rgba(150, 150, 180, 0)');
+                
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(f.x, f.y, f.radius, 0, Math.PI*2);
+                ctx.fill();
+            });
+            ctx.globalCompositeOperation = 'source-over';
+        }
+
+        function drawBranches(ctx) {
+            ctx.save();
+            ctx.fillStyle = '#050505';
+            ctx.strokeStyle = '#050505';
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            // Branch 1 (Left trees to Owl 1 at 220, 380)
+            ctx.lineWidth = 22;
+            ctx.beginPath();
+            ctx.moveTo(0, 440);
+            ctx.quadraticCurveTo(110, 436, 180, 433);
+            ctx.stroke();
+
+            ctx.lineWidth = 14;
+            ctx.beginPath();
+            ctx.moveTo(180, 433);
+            ctx.quadraticCurveTo(220, 430, 285, 426);
+            ctx.stroke();
+
+            // Twigs for Branch 1
+            ctx.lineWidth = 6;
+            ctx.beginPath();
+            ctx.moveTo(160, 434);
+            ctx.quadraticCurveTo(200, 458, 245, 472);
+            ctx.moveTo(250, 428);
+            ctx.quadraticCurveTo(275, 412, 295, 410);
+            ctx.stroke();
+
+            // Branch 2 (Left trees to Owl 2 at 320, 250)
+            ctx.lineWidth = 18;
+            ctx.beginPath();
+            ctx.moveTo(0, 268);
+            ctx.quadraticCurveTo(140, 280, 240, 288);
+            ctx.stroke();
+
+            ctx.lineWidth = 12;
+            ctx.beginPath();
+            ctx.moveTo(240, 288);
+            ctx.quadraticCurveTo(320, 292, 385, 297);
+            ctx.stroke();
+
+            // Twigs for Branch 2
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.moveTo(220, 286);
+            ctx.quadraticCurveTo(270, 265, 305, 258);
+            ctx.moveTo(340, 293);
+            ctx.quadraticCurveTo(370, 312, 395, 320);
+            ctx.stroke();
+
+            // Branch 3 (Right trees to Owl 3 at 1680, 360)
+            ctx.lineWidth = 22;
+            ctx.beginPath();
+            ctx.moveTo(1920, 425);
+            ctx.quadraticCurveTo(1820, 418, 1750, 414);
+            ctx.stroke();
+
+            ctx.lineWidth = 14;
+            ctx.beginPath();
+            ctx.moveTo(1750, 414);
+            ctx.quadraticCurveTo(1680, 409, 1595, 403);
+            ctx.stroke();
+
+            // Twigs for Branch 3
+            ctx.lineWidth = 6;
+            ctx.beginPath();
+            ctx.moveTo(1760, 415);
+            ctx.quadraticCurveTo(1710, 442, 1665, 455);
+            ctx.moveTo(1640, 406);
+            ctx.quadraticCurveTo(1615, 422, 1585, 426);
+            ctx.stroke();
+
+            // Branch 4 (Right trees to Owl 4 at 1790, 460)
+            ctx.lineWidth = 18;
+            ctx.beginPath();
+            ctx.moveTo(1920, 520);
+            ctx.quadraticCurveTo(1870, 513, 1820, 507);
+            ctx.stroke();
+
+            ctx.lineWidth = 12;
+            ctx.beginPath();
+            ctx.moveTo(1820, 507);
+            ctx.quadraticCurveTo(1790, 504, 1720, 498);
+            ctx.stroke();
+
+            // Twigs for Branch 4
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.moveTo(1830, 508);
+            ctx.quadraticCurveTo(1795, 530, 1765, 540);
+            ctx.moveTo(1750, 500);
+            ctx.quadraticCurveTo(1725, 485, 1705, 482);
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        function drawOwls(ctx) {
+            drawBranches(ctx);
+
+            owls.forEach(owl => {
+                owl.timer += 0.5;
+                let eyeScale = 1;
+                // Blink closed randomly
+                if (owl.timer > 100) {
+                    if (owl.timer < 105) eyeScale = 0.1;
+                    else owl.timer = 0;
+                }
+
+                ctx.save();
+                ctx.translate(owl.x, owl.y);
+                const s = owl.scale || 1.0;
+                ctx.scale(s, s);
+
+                // Black Owl Silhouette
+                ctx.fillStyle = '#050505';
+                ctx.strokeStyle = '#050505';
+
+                // Tail feathers
+                ctx.beginPath();
+                ctx.moveTo(-6, 42);
+                ctx.lineTo(0, 68);
+                ctx.lineTo(6, 42);
+                ctx.fill();
+
+                // Owl Body
+                ctx.beginPath();
+                ctx.ellipse(0, 28, 16, 24, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Folded Wings
+                ctx.beginPath();
+                ctx.ellipse(-12, 28, 6, 20, 0.12, 0, Math.PI * 2);
+                ctx.ellipse(12, 28, 6, 20, -0.12, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Owl Head
+                ctx.beginPath();
+                ctx.ellipse(0, 0, 18, 14, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Ear Tufts / Horns
+                ctx.beginPath();
+                // Left tuft
+                ctx.moveTo(-11, -8);
+                ctx.lineTo(-20, -25);
+                ctx.lineTo(-4, -12);
+                // Right tuft
+                ctx.moveTo(4, -12);
+                ctx.lineTo(20, -25);
+                ctx.lineTo(11, -8);
+                ctx.fill();
+
+                // Talons gripping branch
+                ctx.fillStyle = '#111111';
+                ctx.beginPath();
+                ctx.arc(-6, 52, 3, 0, Math.PI * 2);
+                ctx.arc(6, 52, 3, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Beak
+                ctx.beginPath();
+                ctx.moveTo(-2, 3);
+                ctx.lineTo(0, 9);
+                ctx.lineTo(2, 3);
+                ctx.fill();
+
+                // Glowing Eyes
+                ctx.fillStyle = '#ffaa00';
+                ctx.strokeStyle = 'rgba(0,0,0,0.95)';
+                ctx.lineWidth = 2;
+
+                // Left Eye (Almond/Alien shaped, tilted inward)
+                ctx.save();
+                ctx.translate(-7, 0);
+                ctx.rotate(0.35);
+                ctx.beginPath();
+                ctx.moveTo(-6, 0);
+                ctx.quadraticCurveTo(0, -5 * eyeScale, 6, 0);
+                ctx.quadraticCurveTo(0, 5 * eyeScale, -6, 0);
+                ctx.shadowColor = '#ffaa00';
+                ctx.shadowBlur = 15;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                ctx.stroke();
+                ctx.restore();
+
+                // Right Eye
+                ctx.save();
+                ctx.translate(7, 0);
+                ctx.rotate(-0.35);
+                ctx.beginPath();
+                ctx.moveTo(-6, 0);
+                ctx.quadraticCurveTo(0, -5 * eyeScale, 6, 0);
+                ctx.quadraticCurveTo(0, 5 * eyeScale, -6, 0);
+                ctx.shadowColor = '#ffaa00';
+                ctx.shadowBlur = 15;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                ctx.stroke();
+                ctx.restore();
+
+                ctx.restore();
+            });
+        }
+
+
+
+
+
+        function render() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            time += 0.05;
+
+            const mx = 350, my = 200;
+            const moonGlow = ctx.createRadialGradient(mx, my, 20, mx, my, 400);
+            moonGlow.addColorStop(0, 'rgba(255, 255, 200, 1)');
+            moonGlow.addColorStop(0.2, 'rgba(255, 150, 50, 0.5)');
+            moonGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.globalCompositeOperation = 'screen';
+            ctx.fillStyle = moonGlow;
+            ctx.beginPath();
+            ctx.arc(mx, my, 400, 0, Math.PI*2);
+            ctx.fill();
+            
+            ctx.globalCompositeOperation = 'source-over';
+
+            // Draw Distant and Foreground Bats
+            allBats.forEach(b => {
+                b.x -= b.speed;
+                b.y += Math.sin(time + b.phase) * 1.5;
+                if (b.x < -150) b.x = 2100;
+                const wingAngle = time * 6 + b.phase;
+                drawBat(ctx, b.x, b.y, b.scale, wingAngle);
+            });
+
+            // Draw Fog
+            drawFog(ctx);
+            
+            // Draw Owls
+            drawOwls(ctx);
+
+            // Draw Lightning
+            if (lightning > 0) {
+                ctx.globalCompositeOperation = 'screen';
+                ctx.fillStyle = `rgba(255, 255, 255, ${lightning * 0.3})`;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.strokeStyle = `rgba(255, 255, 255, ${lightning})`;
+                ctx.lineWidth = 6;
+                ctx.shadowColor = '#fff';
+                ctx.shadowBlur = 40;
+                
+                ctx.beginPath();
+                ctx.moveTo(lightningPath[0].x, lightningPath[0].y);
+                for(let i=1; i<lightningPath.length; i++) {
+                    ctx.lineTo(lightningPath[i].x, lightningPath[i].y);
+                }
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+                lightning -= 0.05;
+                ctx.globalCompositeOperation = 'source-over';
+            }
+
+            // Draw Witch (Smooth Randomized Flight)
+            witch.x -= witch.speed;
+            if (Math.random() < 0.01) witch.targetY = Math.random() * 300 + 50;
+            if (witch.targetY === undefined) witch.targetY = 300;
+            witch.y += (witch.targetY - witch.y) * 0.015;
+            let flightAngle = (witch.y - witch.targetY) * 0.005;
+
+            if (witch.x < -300) {
+                witch.x = 2100;
+                witch.y = Math.random() * 300 + 100;
+                witch.targetY = witch.y;
+            }
+            drawWitch(ctx, witch.x, witch.y, witch.scale, flightAngle);
+
+            requestAnimationFrame(render);
+        }
+
+        render();
+
+        // Keyboard controls
+        let isPaused = false;
+        let isLocked = false;
+        let slideDuration = 10;
+        let slideTimer = null;
+
+        function prevSlide() { if(!isLocked) console.log("Previous slide"); }
+        function nextSlide() { if(!isLocked) console.log("Next slide"); }
+        function restartModule() { if(!isLocked) console.log("Restart module (slide 0)"); }
+        function skipModule() { if(!isLocked) console.log("Skip module"); }
+        
+        function resetTimer() {
+            if(slideTimer) clearInterval(slideTimer);
+            if(!isPaused && !isLocked) {
+                slideTimer = setInterval(nextSlide, slideDuration * 1000);
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            const activeTag = document.activeElement.tagName.toLowerCase();
+            if (['input', 'textarea', 'select'].includes(activeTag)) return;
+
+            switch(event.key) {
+                case 'ArrowLeft': prevSlide(); break;
+                case 'ArrowRight': nextSlide(); break;
+                case 'ArrowUp': restartModule(); break;
+                case 'ArrowDown': skipModule(); break;
+                case ' ':
+                case 'Spacebar':
+                    isPaused = !isPaused;
+                    resetTimer();
+                    event.preventDefault();
+                    break;
+                case 'a':
+                case 'A':
+                    window.open('admin.html', '_blank');
+                    break;
+                case 'r':
+                case 'R':
+                    window.open('remote.html', '_blank');
+                    break;
+                case 'p':
+                case 'P':
+                    window.open('posterkaraoke.html', '_blank');
+                    break;
+                case '0':
+                    isLocked = !isLocked;
+                    resetTimer();
+                    break;
+                default:
+                    const num = parseInt(event.key);
+                    if (!isNaN(num) && num >= 1 && num <= 9) {
+                        slideDuration = num * 10;
+                        resetTimer();
+                    }
+                    break;
+            }
+        });
+        
+        resetTimer();
+    </script>
+</body>
+</html>
